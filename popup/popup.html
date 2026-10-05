@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Chamilo Refresh</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h1>Chamilo Refresh</h1>
+
+  <fieldset>
+    <legend>Thème</legend>
+    <div class="seg" id="theme">
+      <label><input type="radio" name="theme" value="auto"><span>Auto</span></label>
+      <label><input type="radio" name="theme" value="dark"><span>Sombre</span></label>
+      <label><input type="radio" name="theme" value="light"><span>Clair</span></label>
+      <label><input type="radio" name="theme" value="off"><span>Désactivé</span></label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Couleur d’accent</legend>
+    <div class="swatches" id="swatches"></div>
+    <label class="custom">Personnalisée <input type="color" id="accent"></label>
+  </fieldset>
+
+  <label class="row"><input type="checkbox" id="fixContrast"> Corriger les textes illisibles</label>
+  <label class="row"><input type="checkbox" id="courseTools"> Recherche et favoris sur « Mes cours »</label>
+  <p class="note" id="note" hidden>Rechargez la page Chamilo pour appliquer ce changement.</p>
+
+  <script src="../src/settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

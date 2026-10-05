@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Mes cours - Grenoble INP - Chamilo (maquette de test)</title>
+<link rel="stylesheet" href="https://chamilo.grenoble-inp.fr/web/assets/fontawesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://chamilo.grenoble-inp.fr/web/assets/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://chamilo.grenoble-inp.fr/web/css/base.css">
+<link rel="stylesheet" href="https://chamilo.grenoble-inp.fr/web/css/themes/chamilo_inp/default.css">
+</head>
+<body dir="ltr" class="section-mycourses">
+<div class="wrap">
+<header id="header-section">
+  <section>
+    <div class="container"><div class="row">
+      <div class="col-md-3"><div class="logo"><a href="/index.php"><img class="img-responsive" id="header-logo" alt="Grenoble INP" src="https://chamilo.grenoble-inp.fr/web/css/themes/chamilo_inp/images/header-logo-custom1.png"></a></div></div>
+      <div class="col-md-9"><div class="col-sm-4 col-sm-offset-8"><ul id="notifications" class="nav nav-pills pull-right"><li><a href="#"><em class="fa fa-user"></em> 83</a></li></ul></div></div>
+    </div></div>
+  </section>
+  <nav id="menubar" class="navbar navbar-default"><div class="container">
+    <div class="collapse navbar-collapse in" id="menuone"><ul class="nav navbar-nav">
+      <li><a href="/index.php">Page d'accueil</a></li>
+      <li class="active"><a href="/user_portal.php">Mes cours</a></li>
+      <li><a href="/main/calendar/agenda_js.php?type=personal">Agenda perso</a></li>
+      <li><a href="/main/mySpace/">Ma progression</a></li>
+    </ul></div>
+  </div></nav>
+</header>
+
+<section id="content-section"><div class="container">
+  <ul class="breadcrumb"><li class="active">Mes cours</li></ul>
+
+  <div class="col-md-3 menu-column">
+    <div class="panel panel-default" id="search_block"><div class="panel-body">
+      <form action="/user_portal.php" method="get" id="native-search">
+        <input type="text" name="keyword" placeholder="Rechercher parmi les cours" class="form-control" style="width:80%;display:inline-block">
+        <button type="submit" class="btn btn-default">OK</button>
+      </form>
+    </div></div>
+    <div class="panel panel-default"><div class="panel-body text-center"><img alt="" width="150" height="150" style="border-radius:50%;background:#bde" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect width='150' height='150' fill='%23f66'/%3E%3C/svg%3E"></div></div>
+    <div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Profil</h3></div>
+      <div class="panel-body"><ul class="nav nav-pills nav-stacked">
+        <li><a href="/main/messages/inbox.php">Boîte de réception <span class="badge" style="background:#f60">9</span></a></li>
+        <li><a href="/main/messages/new_message.php">Composer</a></li>
+        <li><a href="/main/auth/profile.php">Éditer le profil</a></li>
+      </ul></div></div>
+  </div>
+
+  <div class="col-md-9">
+    <select class="form-control" style="margin-bottom:10px"><option>--</option><option>Semestre 9</option></select>
+
+    <div class="panel panel-default"><div class="panel-body"><div class="row">
+      <div class="col-md-2"><img class="img-thumbnail" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='60'%3E%3Crect width='90' height='60' fill='%23274'/%3E%3C/svg%3E"></div>
+      <div class="col-md-10">
+        <h4 class="course-items-title"><a href="https://chamilo.grenoble-inp.fr/courses/CE410/index.php?id_session=0">CE410 - CE419 - Conception de circuits numériques complexes sur cible FPGA</a></h4>
+        <p><small><a href="/main/messages/new_message.php?u=1">SebastienMartin</a> | <a href="/main/messages/new_message.php?u=2">VincentBeroulle</a> | <a href="/main/messages/new_message.php?u=3">LaurentGuilloton</a></small></p>
+      </div></div></div></div>
+
+    <div class="panel panel-default"><div class="panel-body"><div class="row">
+      <div class="col-md-2"><img class="img-thumbnail" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='60'%3E%3Crect width='90' height='60' fill='%23274'/%3E%3C/svg%3E"></div>
+      <div class="col-md-10">
+        <h4 class="course-items-title"><a href="https://chamilo.grenoble-inp.fr/courses/EE410/index.php?id_session=0">EE410 - Conception de circuits et systèmes intégrés</a></h4>
+        <p><small><a href="/main/messages/new_message.php?u=4">DahmaneAllane</a> | <a href="/main/messages/new_message.php?u=2">VincentBeroulle</a></small></p>
+      </div></div></div></div>
+
+    <div class="panel panel-default"><div class="panel-body"><div class="row">
+      <div class="col-md-2"><img class="img-thumbnail" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='60'%3E%3Crect width='90' height='60' fill='%23274'/%3E%3C/svg%3E"></div>
+      <div class="col-md-10">
+        <h4 class="course-items-title"><a href="https://chamilo.grenoble-inp.fr/courses/ESISARPX505/index.php?id_session=0">ESISAR PX505 Innovation Project 5A EIS</a></h4>
+        <p><small>Texte collé depuis Word : <span id="bad-inline" style="color:#1f1f1f">gris très sombre en ligne</span> et <span id="ok-inline" style="color:#ffffff;background:#222">blanc sur fond sombre</span></small></p>
+      </div></div></div></div>
+  </div>
+</div></section>
+</div>
+</body>
+</html>
