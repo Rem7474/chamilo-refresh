@@ -82,8 +82,9 @@ const auditContrast = () => {
 
   // ---------- Page de connexion publique (vraie) ----------
   const login = await ctx.newPage();
-  await login.goto(`${ORIGIN}/`, { waitUntil: 'load' });
-  for (const theme of ['dark', 'light']) {
+  const liveSite = await login.goto(`${ORIGIN}/`, { waitUntil: 'load', timeout: 20000 }).then(() => true, () => false);
+  if (!liveSite) console.log('SKIP  [connexion] site Chamilo injoignable depuis cet environnement, pages réelles ignorées');
+  for (const theme of liveSite ? ['dark', 'light'] : []) {
     await setSettings({ theme });
     await login.reload({ waitUntil: 'load' });
     check(await login.evaluate(() => document.documentElement.dataset.bcTheme) === theme, `[connexion] thème ${theme} appliqué`);
