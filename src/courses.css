@@ -125,3 +125,5 @@ html[data-bc-theme="light"] .bc-star[aria-pressed="true"] { color: #b45309; }
   color: var(--bc-muted);
   text-align: center;
 }
+
+.bc-card.bc-closed { opacity: .72; }

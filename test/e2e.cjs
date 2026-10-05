@@ -95,7 +95,8 @@ const auditContrast = () => {
   check(await page.locator('#content-section select:visible').count() === 0, 'aucun sélecteur natif visible au-dessus des cours');
   const heroBox = await page.locator('.bc-hero').boundingBox();
   check(heroBox.y < 360 && heroBox.width > 900, 'barre de recherche large et en haut de page', JSON.stringify(heroBox));
-  check(await page.locator('.bc-card').count() === 3, '3 cours détectés');
+  check(await page.locator('.bc-card').count() === 4, '4 cours détectés, dont un cours inaccessible sans lien');
+  check(await page.locator('.bc-card.bc-closed').count() === 1, 'cours inaccessible repéré malgré l’absence de lien');
   await page.screenshot({ path: path.join(OUT, 'portal-dark.png') });
 
   const bad = await page.evaluate(auditContrast);
@@ -112,6 +113,8 @@ const auditContrast = () => {
   check(await page.locator('.bc-card:visible').count() === 1, 'filtrage en direct : "fpga" -> 1 cours');
   await page.keyboard.press('Control+A'); await page.keyboard.type('beroulle');
   check(await page.locator('.bc-card:visible').count() === 2, 'recherche par enseignant : "beroulle" -> 2 cours');
+  await page.keyboard.press('Control+A'); await page.keyboard.type('semiconducteurs');
+  check(await page.locator('.bc-card:visible.bc-closed').count() === 1, 'recherche : le cours inaccessible est trouvé');
   await page.keyboard.press('Control+A'); await page.keyboard.type('systemes integres');
   check(await page.locator('.bc-card:visible').count() === 1, 'recherche insensible aux accents');
   await page.screenshot({ path: path.join(OUT, 'portal-search.png') });

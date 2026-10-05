@@ -17,22 +17,38 @@
   };
   const normalize = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
 
-  function collectUnits() {
-    const links = [...document.querySelectorAll('#content-section a[href*="/courses/"]')]
-      .filter((a) => KEY(a) && !a.closest(SKIP_LINKS) && !a.closest(NOT_A_COURSE_LIST));
-    const byKey = new Map();
-    for (const a of links) {
-      if (!byKey.has(KEY(a))) byKey.set(KEY(a), []);
-      byKey.get(KEY(a)).push(a);
-    }
+  const COURSE_HEADING = 'h1, h2, h3, h4, h5, h6';
+  const HEADING_KEY = (h) => `title:${normalize(h.textContent)}`;
+  const isCourseHeading = (h) => /course/i.test(h.className) && h.textContent.trim() && !h.querySelector('a[href*="/courses/"]');
 
+  // Cours sans lien d'accès (fermés / inaccessibles) : repérés par leur titre.
+  function collectUnits() {
+    const inContent = (el) => !el.closest(SKIP_LINKS) && !el.closest(NOT_A_COURSE_LIST);
+    const links = [...document.querySelectorAll('#content-section a[href*="/courses/"]')]
+      .filter((a) => KEY(a) && inContent(a));
+    const headings = [...document.querySelectorAll(`#content-section :is(${COURSE_HEADING})`)]
+      .filter((h) => isCourseHeading(h) && inContent(h));
+    const byKey = new Map();
+    const add = (key, el, inaccessible) => {
+      if (!byKey.has(key)) byKey.set(key, { els: [], inaccessible });
+      byKey.get(key).els.push(el);
+    };
+    links.forEach((a) => add(KEY(a), a, false));
+    headings.forEach((h) => { if (!h.closest('a')) add(HEADING_KEY(h), h, true); });
+
+    const keysIn = (el) => {
+      const keys = new Set();
+      el.querySelectorAll('a[href*="/courses/"]').forEach((x) => { if (KEY(x)) keys.add(KEY(x)); });
+      el.querySelectorAll(COURSE_HEADING).forEach((h) => { if (headings.includes(h)) keys.add(HEADING_KEY(h)); });
+      return keys;
+    };
     const onlyThisCourse = (el, key) => {
       if (el.querySelector('input, select, form, textarea')) return false;
-      return [...el.querySelectorAll('a[href*="/courses/"]')].every((x) => !KEY(x) || KEY(x) === key);
+      return [...keysIn(el)].every((k) => k === key);
     };
 
     const units = [];
-    for (const [key, anchors] of byKey) {
+    for (const [key, { els: anchors, inaccessible }] of byKey) {
       let el = anchors[0];
       for (let depth = 0; depth < 6 && el.parentElement && !el.parentElement.matches(BOUNDARY); depth++) {
         if (!onlyThisCourse(el.parentElement, key)) break;
@@ -42,7 +58,7 @@
         el = el.parentElement;
       }
       const title = anchors.find((a) => a.textContent.trim()) || anchors[0];
-      units.push({ key, el, title, text: normalize(el.textContent), index: units.length });
+      units.push({ key, el, title, inaccessible, text: normalize(el.textContent), index: units.length });
     }
     return units.filter((u, i) => units.findIndex((v) => v.el === u.el) === i);
   }
@@ -133,6 +149,7 @@
 
     for (const u of units) {
       u.el.classList.add('bc-card');
+      if (u.inaccessible) u.el.classList.add('bc-closed');
       const star = document.createElement('button');
       star.type = 'button';
       star.className = 'bc-star';
@@ -216,7 +233,7 @@
       else if (e.key === 'Enter') {
         e.preventDefault();
         const visible = visibleUnits();
-        if (visible.length) visible[Math.max(activeIndex, 0)].title.click();
+        if (visible.length) { const t = visible[Math.max(activeIndex, 0)]; if (!t.inaccessible) t.title.click(); }
         else if (nativeForm && input.value.trim()) { mirrorToNative(); nativeForm.requestSubmit ? nativeForm.requestSubmit() : nativeForm.submit(); }
       }
     });
