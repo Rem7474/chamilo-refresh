@@ -162,7 +162,7 @@
     catalog.hidden = true;
     hero.after(empty);
     if (units.length) {
-      const last = units.map((u) => u.el).reduce((a, b) => (a.compareDocumentPosition(b) & 4 ? b : a));
+      const last = units.map((u) => u.el).reduce((a, b) => (a.compareDocumentPosition(b) & 4 ? b : a), units[0].el);
       last.after(catalog);
     } else {
       empty.after(catalog);
@@ -373,7 +373,7 @@
         const term = input.value.trim();
         if (!term || !nativeForm) return;
         clearTimeout(searchTimer);
-        if (searchTerm !== term) searchCatalog(term);
+        if (searchTerm !== term) void searchCatalog(term);
         await searching;
         const first = catalogRows.find((r) => r.href);
         if (first && input.value.trim() === term) location.href = first.href;
