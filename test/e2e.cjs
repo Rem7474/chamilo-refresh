@@ -225,6 +225,40 @@ const auditContrast = () => {
   check(badLight.length === 0, '[maquette] contraste >= WCAG AA (clair, accent rouge)', badLight.slice(0, 6).join(' | '));
   await page.screenshot({ path: path.join(OUT, 'portal-light.png') });
 
+  // ---------- Maquette « accueil du cours » : outils sous forme de cartes ----------
+  const courseHome = fs.readFileSync(path.join(__dirname, 'mock-course-home.html'), 'utf8');
+  await ctx.route(`${ORIGIN}/courses/ESISAR5AMMB501/index.php*`, (r) => r.fulfill({ contentType: 'text/html; charset=utf-8', body: courseHome }));
+  for (const theme of ['dark', 'light']) {
+    await setSettings({ theme });
+    await page.goto(`${ORIGIN}/courses/ESISAR5AMMB501/index.php?id_session=0`, { waitUntil: 'load' });
+    const cards = await page.evaluate(() => {
+      const el = [...document.querySelectorAll('.course-tool')];
+      const r = el.map((c) => c.getBoundingClientRect());
+      const cs = getComputedStyle(el[0]);
+      const icon = getComputedStyle(document.querySelector('img.tool-icon'));
+      const link = document.querySelector('#istooldesc_3');
+      const lr = getComputedStyle(link, '::after');
+      const lb = link.getBoundingClientRect();
+      return {
+        n: el.length,
+        perRow: r.filter((b) => Math.abs(b.top - r[0].top) < 2).length,
+        sameHeight: new Set(r.map((b) => Math.round(b.height))).size === 1,
+        radius: cs.borderTopLeftRadius, bg: cs.backgroundColor, icon: [icon.width, icon.webkitMaskImage.slice(0, 20)],
+        emptyHidden: getComputedStyle(document.querySelector('#course_tools .col-md-12')).display === 'none',
+        stretched: lr.position === 'absolute' && lr.content !== 'none',
+        top: r[0].top, linkW: lb.width,
+      };
+    });
+    check(cards.n === 5 && cards.perRow >= 3 && cards.sameHeight, `[accueil cours] outils en grille de cartes (${theme})`, JSON.stringify(cards));
+    check(parseFloat(cards.radius) >= 12 && cards.emptyHidden && cards.stretched, `[accueil cours] cartes arrondies, colonne vide masquée, carte entière cliquable (${theme})`, JSON.stringify(cards));
+    check(cards.icon[0] === '30px' && cards.icon[1].startsWith('url('), `[accueil cours] icône vectorielle agrandie (${theme})`, cards.icon.join(' '));
+    const badCards = await page.evaluate(auditContrast);
+    check(badCards.length === 0, `[accueil cours] contraste >= WCAG AA (${theme})`, badCards.slice(0, 6).join(' | '));
+    await page.screenshot({ path: path.join(OUT, `course-home-${theme}.png`) });
+  }
+  const hit = await page.evaluate(() => { const b = document.querySelector('.course-tool').getBoundingClientRect(); const e = document.elementFromPoint(b.right - 10, b.bottom - 10); return e && e.id; });
+  check(hit === 'istooldesc_3', '[accueil cours] un clic n’importe où sur la carte ouvre l’outil', String(hit));
+
   // page d'accueil (index.php) : même barre, mode catalogue seul
   const i0 = mock.lastIndexOf('<div class="col-md-9">');
   const i1 = mock.lastIndexOf('</div></section>');

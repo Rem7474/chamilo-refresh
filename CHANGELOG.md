@@ -2,6 +2,7 @@
 
 ## Non publié
 
+- Accueil d'un cours : outils (Documents, Liens, Utilisateurs, Travaux…) présentés en cartes, carte entière cliquable, outils masqués estompés.
 - Résultats de la recherche native (catalogue complet) affichés sous la barre, y compris les cours non inscrits.
 - Barre de recherche aussi sur la page d'accueil.
 - Page Documents : arborescence des dossiers dans une colonne latérale (construite depuis la liste « Répertoire courant », qui est masquée).

@@ -1,0 +1,46 @@
+html[data-bc-theme] #course_tools > .row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+  margin: 0 0 16px;
+}
+html[data-bc-theme] #course_tools > .row::before,
+html[data-bc-theme] #course_tools > .row::after { display: none; }
+html[data-bc-theme] #course_tools > .row > .col-md-12:empty { display: none; }
+html[data-bc-theme] #course_tools > .row > [class*="col-"]:not(.course-tool) { grid-column: 1 / -1; width: auto; float: none; padding: 0; }
+
+html[data-bc-theme] #course_tools .course-tool {
+  position: relative;
+  float: none; width: auto; margin: 0 !important; padding: 20px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+  background: var(--bc-surface);
+  border: 1px solid var(--bc-border);
+  border-radius: 16px;
+  box-shadow: var(--bc-shadow);
+  --bc-icon-color: var(--bc-accent);
+  transition: transform .12s, border-color .12s, box-shadow .12s;
+}
+html[data-bc-theme] #course_tools .course-tool:hover {
+  transform: translateY(-2px);
+  border-color: var(--bc-accent);
+}
+html[data-bc-theme] #course_tools .course-tool:focus-within { outline: 2px solid var(--bc-accent); outline-offset: 2px; }
+
+html[data-bc-theme] #course_tools .course-tool > a[id^="tooldesc_"] {
+  display: flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; flex: none;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--bc-accent) 16%, var(--bc-surface-2));
+}
+html[data-bc-theme] #course_tools .course-tool img.tool-icon { width: 30px; height: 30px; opacity: 1; }
+
+html[data-bc-theme] #course_tools .course-tool > a[id^="istooldesc_"] {
+  color: var(--bc-text) !important;
+  font-size: 17px; font-weight: 600; line-height: 1.3;
+  text-decoration: none;
+}
+html[data-bc-theme] #course_tools .course-tool > a[id^="istooldesc_"]::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+
+html[data-bc-theme] #course_tools .course-tool > a.invisible,
+html[data-bc-theme] #course_tools .course-tool > a[id^="tooldesc_"].invisible img { opacity: .5; }
+html[data-bc-theme] #course_tools .course-tool .make_visible_and_invisible { position: relative; z-index: 1; }

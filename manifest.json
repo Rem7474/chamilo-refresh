@@ -49,6 +49,15 @@
     },
     {
       "matches": [
+        "https://chamilo.grenoble-inp.fr/courses/*"
+      ],
+      "css": [
+        "src/course-home.css"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
         "https://chamilo.grenoble-inp.fr/*"
       ],
       "css": [
