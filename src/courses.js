@@ -136,6 +136,11 @@
         <span class="bc-hint">${catalogOnly ? 'Entrée pour ouvrir le premier résultat · Échap pour effacer' : '↑ ↓ pour naviguer · Entrée pour ouvrir · Échap pour effacer'}</span>
       </div>`;
     const input = hero.querySelector('.bc-hero-input');
+    const narrow = window.matchMedia('(max-width: 480px)');
+    const fullPlaceholder = input.placeholder;
+    const fitPlaceholder = () => { input.placeholder = narrow.matches ? 'Rechercher un cours…' : fullPlaceholder; };
+    fitPlaceholder();
+    narrow.addEventListener('change', fitPlaceholder);
     const chip = hero.querySelector('.bc-chip');
     const count = hero.querySelector('.bc-count');
     const status = hero.querySelector('.bc-status');

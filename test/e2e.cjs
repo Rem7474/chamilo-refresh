@@ -292,6 +292,32 @@ const auditContrast = () => {
   const badHome = await page.evaluate(auditContrast);
   check(badHome.length === 0, '[accueil] contraste >= WCAG AA', badHome.slice(0, 6).join(' | '));
 
+  // ---------- Passe responsive : pas de défilement horizontal à 390 px, thèmes sombre et clair ----------
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const [name, url] of [['portal', '/user_portal.php'], ['documents', '/main/document/document.php'], ['course-home', '/courses/ESISAR5AMMB501/index.php?id_session=0'], ['index', '/index.php']]) {
+    for (const theme of ['dark', 'light']) {
+      await setSettings({ theme });
+      await page.goto(`${ORIGIN}${url}`, { waitUntil: 'load' });
+      await page.waitForTimeout(400);
+      const over = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, iw: window.innerWidth }));
+      check(over.sw <= over.iw + 1, `[mobile] ${name} sans défilement horizontal (${theme})`, `${over.sw} > ${over.iw}`);
+      if (name === 'portal') {
+        const ph = await page.evaluate(() => { const i = document.querySelector('.bc-hero-input'); return { fits: i.scrollWidth <= i.clientWidth, ph: i.placeholder }; });
+        check(ph.ph.length < 25, `[mobile] placeholder de la barre raccourci (${theme})`, ph.ph);
+      }
+      const badMobile = await page.evaluate(auditContrast);
+      check(badMobile.length === 0, `[mobile] ${name} contraste >= WCAG AA (${theme})`, badMobile.slice(0, 4).join(' | '));
+      await page.screenshot({ path: path.join(OUT, `mobile-${name}-${theme}.png`), fullPage: true });
+    }
+  }
+  await page.setViewportSize({ width: 1500, height: 900 });
+  await setSettings({ theme: 'light' });
+  await page.goto(`${ORIGIN}/main/document/document.php`, { waitUntil: 'load' });
+  await page.waitForSelector('.bc-tree');
+  const badDocLight = await page.evaluate(auditContrast);
+  check(badDocLight.length === 0, '[documents] contraste >= WCAG AA (clair)', badDocLight.slice(0, 4).join(' | '));
+  await page.screenshot({ path: path.join(OUT, 'documents-light.png') });
+
   // thème désactivé : plus aucun attribut
   await setSettings({ theme: 'off' });
   await page.reload({ waitUntil: 'load' });

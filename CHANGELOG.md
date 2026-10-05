@@ -2,6 +2,7 @@
 
 ## Non publié
 
+- Mobile : texte d'invite de la barre de recherche raccourci sous 480 px ; tableaux de données sans liseré aux coins arrondis.
 - Tableaux de données et barres d'outils : bordure unique à la couleur du thème, coins arrondis, plus de quadrillage blanc entre les cellules.
 - Accueil d'un cours : outils (Documents, Liens, Utilisateurs, Travaux…) présentés en cartes, carte entière cliquable, outils masqués estompés.
 - Résultats de la recherche native (catalogue complet) affichés sous la barre, y compris les cours non inscrits.

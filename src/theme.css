@@ -223,6 +223,7 @@ html[data-bc-theme] table.data_table {
   border: 1px solid var(--bc-border) !important;
   border-collapse: separate !important;
   border-spacing: 0;
+  background: transparent !important;
   border-radius: var(--bc-radius);
 }
 html[data-bc-theme] .data_table th, html[data-bc-theme] .data_table td {
