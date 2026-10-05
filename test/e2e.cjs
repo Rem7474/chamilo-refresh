@@ -59,7 +59,17 @@ const auditContrast = () => {
   const extId = require('crypto').createHash('sha256').update(EXT).digest('hex').slice(0, 32)
     .replace(/[0-9a-f]/g, (c) => 'abcdefghijklmnop'[parseInt(c, 16)]);
   const mock = fs.readFileSync(path.join(__dirname, 'mock-portal.html'), 'utf8');
-  await ctx.route(`${ORIGIN}/user_portal.php*`, (r) => r.fulfill({ contentType: 'text/html; charset=utf-8', body: mock }));
+  const searchPosts = [];
+  const catalogAnswer = (r) => {
+    const body = r.request().postData() || '';
+    searchPosts.push(body);
+    const term = decodeURIComponent((/search_term=([^&]*)/.exec(body) || [])[1] || '').toLowerCase();
+    const list = term === 'in513'
+      ? '<div id="plugin_search_course_list" class="list"><h5>1 Résultat(s)</h5><div class="plugin_search_course"><table class="plugin_search_course"><tr><td><b><a href="/courses/IN513/index.php">ESISAR IN513 - Infrastructures pour la sécurité</a></b></td><td><img alt="L’inscription n’est pas autorisée" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></td></tr></table></div></div>'
+      : '<div id="plugin_search_course_list" class="list"><h5>0 Résultat(s)</h5></div>';
+    return r.fulfill({ contentType: 'text/html; charset=utf-8', body: `<html><body>${list}</body></html>` });
+  };
+  await ctx.route(`${ORIGIN}/user_portal.php*`, (r) => (r.request().method() === 'POST' ? catalogAnswer(r) : r.fulfill({ contentType: 'text/html; charset=utf-8', body: mock })));
   await ctx.route(`${ORIGIN}/courses/**`, (r) => r.fulfill({ contentType: 'text/html', body: '<h1>cours ouvert</h1>' }));
 
   const setSettings = async (v) => {
@@ -125,6 +135,10 @@ const auditContrast = () => {
   await page.waitForSelector('.bc-hero');
   await page.keyboard.type('zzzz');
   check(await page.locator('.bc-empty').isVisible(), 'message "aucun résultat"');
+  await page.evaluate(() => { window.__noReload = true; });
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(() => /Aucun résultat dans le catalogue/.test(document.querySelector('.bc-status').textContent), null, { timeout: 5000 });
+  check(await page.evaluate(() => window.__noReload === true), 'Entrée sans résultat : la page n’est pas rechargée');
 
   // cours hors de mes cours : résultats du catalogue via la recherche native
   await page.locator('.bc-hero-input').fill('');
@@ -133,6 +147,7 @@ const auditContrast = () => {
   check(await page.locator('.bc-card:visible').count() === 0, 'catalogue : aucun de mes cours ne correspond à IN513');
   check((await page.locator('.bc-catalog').textContent()).includes('inscription'), 'catalogue : cours non inscrit affiché sous la barre');
   check(await page.locator('.bc-native-search:visible').count() === 0, 'catalogue : bloc natif toujours masqué');
+  check(searchPosts.some((b) => /search_course=1/.test(b) && /sec_token=tok123/.test(b) && /search_term=IN513/.test(b)), 'catalogue : requête identique au formulaire natif (POST, jeton inclus)');
   await page.screenshot({ path: path.join(OUT, 'portal-catalog.png') });
   await Promise.all([page.waitForURL('**/courses/IN513/**'), page.keyboard.press('Enter')]);
   check(true, 'catalogue : Entrée ouvre le premier résultat');
@@ -164,7 +179,7 @@ const auditContrast = () => {
   const i0 = mock.lastIndexOf('<div class="col-md-9">');
   const i1 = mock.lastIndexOf('</div></section>');
   const home = mock.slice(0, i0) + '<div class="col-md-9"><h1>Outils et tutoriels</h1><p>Bienvenue sur la page d’accueil.</p></div>\n' + mock.slice(i1);
-  await ctx.route(`${ORIGIN}/index.php*`, (r) => r.fulfill({ contentType: 'text/html; charset=utf-8', body: home }));
+  await ctx.route(`${ORIGIN}/index.php*`, (r) => (r.request().method() === 'POST' ? catalogAnswer(r) : r.fulfill({ contentType: 'text/html; charset=utf-8', body: home })));
   await setSettings({ theme: 'dark' });
   await page.goto(`${ORIGIN}/index.php`, { waitUntil: 'load' });
   await page.waitForSelector('.bc-hero');

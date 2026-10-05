@@ -219,120 +219,130 @@
       empty.hidden = shown > 0 || !units.length;
       empty.textContent = favoritesOnly && !terms.length
         ? 'Aucun favori pour le moment : cliquez sur ☆ à côté d’un cours.'
-        : `Aucun de vos cours ne correspond à « ${input.value.trim()} ».${nativeForm ? ' Entrée lance la recherche Chamilo.' : ''}`;
+        : `Aucun de vos cours ne correspond à « ${input.value.trim()} ».${nativeForm ? ' Les résultats du catalogue Chamilo s’affichent dessous.' : ''}`;
       setActive(terms.length ? 0 : -1);
     }
 
-    function mirrorToNative() {
-      if (!native) return;
-      native.value = input.value;
-      native.dispatchEvent(new Event('input', { bubbles: true }));
-      native.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
-    }
-
-    // Premier contrôle cliquable après le champ natif (loupe) ; les liens réels (résultats) sont ignorés.
-    function nativeSubmitControl() {
-      const candidates = nativeBlock.querySelectorAll('button, input[type=submit], input[type=image], input[type=button], a, img, [role=button], [onclick]');
-      return [...candidates].find((el) => {
-        if (native.contains(el) || !(native.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)) return false;
-        const link = el.closest('a[href]');
-        return !link || /^(#|javascript:|$)/.test(link.getAttribute('href').trim());
-      });
-    }
-
-    // Lance la recherche native (catalogue complet) sans quitter la page : la navigation du formulaire est bloquée.
-    function triggerNativeSearch() {
-      if (!native) return;
-      const block = (e) => e.preventDefault();
-      try {
-        mirrorToNative();
-        if (nativeForm) nativeForm.addEventListener('submit', block, true);
-        const control = nativeSubmitControl();
-        if (control) control.click();
-        else if (nativeForm) nativeForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-      } catch (err) {
-        console.warn('Chamilo Refresh : recherche native indisponible', err);
-      } finally {
-        if (nativeForm) nativeForm.removeEventListener('submit', block, true);
-      }
-      setStatus('Recherche dans le catalogue…');
-      const term = input.value;
-      clearTimeout(statusTimer);
-      statusTimer = setTimeout(() => {
-        if (input.value === term && catalog.hidden) setStatus('Aucun résultat dans le catalogue · Entrée pour lancer la recherche Chamilo complète');
-      }, 2500);
-    }
+    // Recherche dans tout le catalogue : même requête que le formulaire natif, envoyée en arrière-plan (pas de rechargement).
+    let searchSeq = 0;
+    let searchTerm = '';
+    let searching = Promise.resolve();
+    let catalogRows = [];
 
     function setStatus(text) { status.textContent = text; }
-    let statusTimer = 0;
 
-    function nativeResults() {
-      const parts = [];
-      const walk = (node) => {
-        for (const child of node.children) {
-          if (child.matches('.panel-heading, script, style, input, button, select, textarea')) continue;
-          if (child.contains(native)) walk(child);
-          else parts.push(child);
-        }
-      };
-      walk(nativeBlock);
-      return parts.map((n) => {
-        const copy = n.cloneNode(true);
-        copy.querySelectorAll('input, button, select, textarea, script, style').forEach((x) => x.remove());
-        copy.querySelectorAll('[id]').forEach((x) => x.removeAttribute('id'));
-        copy.removeAttribute('id');
-        return copy;
-      }).filter((n) => n.textContent.trim() || n.querySelector('img, a'));
+    function parseResults(doc) {
+      const list = doc.querySelector('#plugin_search_course_list');
+      if (!list) return [];
+      return [...list.querySelectorAll('tr')].map((tr) => {
+        const link = tr.querySelector('a[href]');
+        let href = '';
+        try { href = link ? new URL(link.getAttribute('href'), location.href).href : ''; } catch { /* bad href */ }
+        if (!/^https?:/.test(href)) href = '';
+        const cells = [...tr.cells];
+        const title = (link || cells[0] || tr).textContent.trim();
+        const notes = [...tr.querySelectorAll('img')].map((i) => i.alt || i.title)
+          .concat(cells.slice(1).map((c) => c.textContent.trim()))
+          .filter(Boolean);
+        return { title, href, notes: [...new Set(notes)] };
+      }).filter((r) => r.title);
     }
 
     function renderCatalog() {
-      const parts = input.value.trim().length >= 2 && nativeBlock ? nativeResults() : [];
-      catalog.hidden = !parts.length;
-      if (parts.length) setStatus('');
-      if (!parts.length) { catalog.replaceChildren(); return; }
+      catalog.hidden = !catalogRows.length;
+      if (!catalogRows.length) { catalog.replaceChildren(); return; }
       const title = document.createElement('h3');
       title.className = 'bc-catalog-title';
-      title.textContent = 'Résultats dans tout le catalogue Chamilo';
-      catalog.replaceChildren(title, ...parts);
+      title.textContent = `${catalogRows.length} résultat${catalogRows.length > 1 ? 's' : ''} dans tout le catalogue Chamilo`;
+      const ul = document.createElement('ul');
+      ul.className = 'bc-results';
+      for (const r of catalogRows) {
+        const li = document.createElement('li');
+        const name = document.createElement(r.href ? 'a' : 'span');
+        name.className = 'bc-result-title';
+        name.textContent = r.title;
+        if (r.href) name.href = r.href;
+        li.append(name);
+        for (const note of r.notes) {
+          const badge = document.createElement('span');
+          badge.className = 'bc-badge-note';
+          badge.textContent = note;
+          li.append(badge);
+        }
+        ul.append(li);
+      }
+      catalog.replaceChildren(title, ul);
+    }
+
+    function clearCatalog() {
+      searchSeq++;
+      searchTerm = '';
+      catalogRows = [];
+      renderCatalog();
+      setStatus('');
+    }
+
+    function searchCatalog(term) {
+      if (!nativeForm) return Promise.resolve();
+      const seq = ++searchSeq;
+      searchTerm = term;
+      setStatus('Recherche dans le catalogue…');
+      searching = (async () => {
+        let rows;
+        try {
+          const data = new URLSearchParams(new FormData(nativeForm));
+          data.set(native.name, term);
+          const url = new URL(nativeForm.getAttribute('action') || location.href, location.href);
+          const init = { credentials: 'same-origin' };
+          if ((nativeForm.method || 'get').toLowerCase() === 'post') { init.method = 'POST'; init.body = data; }
+          else data.forEach((v, k) => url.searchParams.set(k, v));
+          const res = await fetch(url, init);
+          rows = parseResults(new DOMParser().parseFromString(await res.text(), 'text/html'));
+        } catch (err) {
+          if (seq === searchSeq) setStatus('Recherche dans le catalogue indisponible');
+          return;
+        }
+        if (seq !== searchSeq) return;
+        catalogRows = rows;
+        renderCatalog();
+        setStatus(rows.length ? '' : 'Aucun résultat dans le catalogue');
+      })();
+      return searching;
     }
 
     let searchTimer = 0;
-    if (nativeBlock) {
-      let frame = 0;
-      new MutationObserver(() => { cancelAnimationFrame(frame); frame = requestAnimationFrame(renderCatalog); })
-        .observe(nativeBlock, { childList: true, subtree: true, characterData: true });
-    }
-
     input.addEventListener('input', () => {
       refresh();
-      mirrorToNative();
       clearTimeout(searchTimer);
-      if (input.value.trim().length >= 2) searchTimer = setTimeout(triggerNativeSearch, 350);
-      else { renderCatalog(); setStatus(''); }
+      const term = input.value.trim();
+      if (term.length >= 2 && nativeForm) searchTimer = setTimeout(() => searchCatalog(term), 300);
+      else clearCatalog();
     });
     chip.addEventListener('click', () => {
       favoritesOnly = !favoritesOnly;
       chip.setAttribute('aria-pressed', String(favoritesOnly));
       refresh();
     });
-    input.addEventListener('keydown', (e) => {
+    input.addEventListener('keydown', async (e) => {
       if (e.isComposing) return;
       if (e.key === 'ArrowDown') { e.preventDefault(); setActive(activeIndex + 1); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(activeIndex - 1); }
-      else if (e.key === 'Escape') { input.value = ''; refresh(); mirrorToNative(); renderCatalog(); setStatus(''); }
+      else if (e.key === 'Escape') { input.value = ''; refresh(); clearTimeout(searchTimer); clearCatalog(); }
       else if (e.key === 'Enter') {
         e.preventDefault();
         const visible = visibleUnits();
-        if (visible.length) { const t = visible[Math.max(activeIndex, 0)]; if (!t.inaccessible) t.title.click(); }
-        else if (catalog.querySelector('a[href]')) catalog.querySelector('a[href]').click();
-        else if (native && input.value.trim()) {
-          const term = input.value;
-          triggerNativeSearch();
-          setTimeout(() => {
-            if (input.value !== term || catalog.querySelector('a[href]') || !nativeForm) return;
-            nativeForm.requestSubmit ? nativeForm.requestSubmit() : nativeForm.submit();
-          }, 1500);
+        if (visible.length) {
+          const t = visible[Math.max(activeIndex, 0)];
+          if (!t.inaccessible) t.title.click();
+          return;
         }
+        const term = input.value.trim();
+        if (!term || !nativeForm) return;
+        clearTimeout(searchTimer);
+        if (searchTerm !== term) searchCatalog(term);
+        await searching;
+        const first = catalogRows.find((r) => r.href);
+        if (first && input.value.trim() === term) location.href = first.href;
       }
     });
     document.addEventListener('keydown', (e) => {

@@ -31,12 +31,13 @@
   <ul class="breadcrumb"><li class="active">Mes cours</li></ul>
 
   <div class="col-md-3 menu-column">
-    <div class="panel panel-default" id="search_block"><div class="panel-body">
-      <form action="/user_portal.php" method="get" id="native-search">
-        <input type="text" name="keyword" placeholder="Rechercher parmi les cours" class="form-control" style="width:80%;display:inline-block">
-        <button type="submit" class="btn btn-default">OK</button>
+    <div class="well course_search"><div class="menusection">
+      <form class="course_list" method="post" action="/user_portal.php">
+        <input type="hidden" name="sec_token" value="tok123" />
+        <input type="hidden" name="search_course" value="1" />
+        <input type="text" id="plugin_search_course_search_term" name="search_term" class="span2" value="Rechercher parmi les cours" />
+        <input type="image" class="btnSearch" style="width:22px" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="Rechercher" />
       </form>
-      <div id="search-results"></div>
     </div></div>
     <div class="panel panel-default"><div class="panel-body text-center"><img alt="" width="150" height="150" style="border-radius:50%;background:#bde" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect width='150' height='150' fill='%23f66'/%3E%3C/svg%3E"></div></div>
     <div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Profil</h3></div>
@@ -80,14 +81,5 @@
   </div>
 </div></section>
 </div>
-<script>
-document.getElementById('native-search').addEventListener('submit', function (e) {
-  e.preventDefault();
-  var q = e.target.keyword.value.trim().toLowerCase();
-  document.getElementById('search-results').innerHTML = q === 'in513'
-    ? '<p><b>1 Résultat(s)</b></p><p><a href="/courses/IN513/index.php">ESISAR IN513 - Infrastructures pour la sécurité</a> <span>L’inscription n’est pas autorisée</span></p>'
-    : '';
-});
-</script>
 </body>
 </html>
