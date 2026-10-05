@@ -2,6 +2,7 @@
 
 ## Non publié
 
+- Tableaux de données et barres d'outils : bordure unique à la couleur du thème, coins arrondis, plus de quadrillage blanc entre les cellules.
 - Accueil d'un cours : outils (Documents, Liens, Utilisateurs, Travaux…) présentés en cartes, carte entière cliquable, outils masqués estompés.
 - Résultats de la recherche native (catalogue complet) affichés sous la barre, y compris les cours non inscrits.
 - Barre de recherche aussi sur la page d'accueil.

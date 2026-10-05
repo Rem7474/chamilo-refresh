@@ -213,6 +213,29 @@ html[data-bc-theme] .actions, html[data-bc-theme] .new_actions, html[data-bc-the
   background-color: var(--bc-surface) !important;
   color: var(--bc-text);
 }
+html[data-bc-theme] .actions, html[data-bc-theme] .new_actions {
+  border: 1px solid var(--bc-border) !important;
+  border-radius: var(--bc-radius);
+  box-shadow: none !important;
+}
+html[data-bc-theme] .table-responsive { border: 0 !important; }
+html[data-bc-theme] table.data_table {
+  border: 1px solid var(--bc-border) !important;
+  border-collapse: separate !important;
+  border-spacing: 0;
+  border-radius: var(--bc-radius);
+}
+html[data-bc-theme] .data_table th, html[data-bc-theme] .data_table td {
+  border-left: 0 !important; border-right: 0 !important; border-bottom: 0 !important;
+  border-top: 1px solid var(--bc-border) !important;
+}
+html[data-bc-theme] .data_table > thead > tr:first-child > th,
+html[data-bc-theme] .data_table > tbody:first-child > tr:first-child > td,
+html[data-bc-theme] .data_table > tbody:first-child > tr:first-child > th { border-top: 0 !important; }
+html[data-bc-theme] .data_table tr:first-child > :first-child { border-top-left-radius: calc(var(--bc-radius) - 1px); }
+html[data-bc-theme] .data_table tr:first-child > :last-child { border-top-right-radius: calc(var(--bc-radius) - 1px); }
+html[data-bc-theme] .data_table tr:last-child > :first-child { border-bottom-left-radius: calc(var(--bc-radius) - 1px); }
+html[data-bc-theme] .data_table tr:last-child > :last-child { border-bottom-right-radius: calc(var(--bc-radius) - 1px); }
 html[data-bc-theme] .table-striped > tbody > tr:nth-of-type(odd) { background: var(--bc-surface-2) !important; }
 html[data-bc-theme] .table-hover > tbody > tr:hover { background: var(--bc-surface-2) !important; }
 

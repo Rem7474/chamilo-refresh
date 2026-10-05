@@ -124,6 +124,15 @@ const auditContrast = () => {
     .filter((e) => { const m = getComputedStyle(e).backgroundColor.match(/\d+/g).map(Number); return (m[0] + m[1] + m[2]) / 3 > 140; })
     .map((e) => e.tagName + '.' + e.className));
   check(lightBgs.length === 0, '[documents] plus de fond clair (barre d’outils, lignes, en-tête)', lightBgs.join(','));
+  const borders = await docPage.evaluate(() => {
+    const light = (c) => { const m = c.match(/\d+/g).map(Number); return (m[0] + m[1] + m[2]) / 3 > 140; };
+    const bar = getComputedStyle(document.querySelector('.actions'));
+    const tbl = getComputedStyle(document.querySelector('table.data_table'));
+    const td = getComputedStyle(document.querySelector('.data_table tbody tr:nth-child(2) td'));
+    return { bar: [bar.borderTopColor, bar.borderTopLeftRadius], tbl: [tbl.borderTopColor, tbl.borderTopLeftRadius, tbl.borderCollapse], td: [td.borderTopColor, td.borderLeftWidth],
+      light: light(bar.borderTopColor) || light(tbl.borderTopColor) || light(td.borderTopColor) };
+  });
+  check(!borders.light && parseFloat(borders.bar[1]) > 0 && parseFloat(borders.tbl[1]) > 0 && borders.tbl[2] === 'separate' && borders.td[1] === '0px', '[documents] bordures sobres : même couleur partout, coins arrondis, pas de quadrillage', JSON.stringify(borders));
   const badDocs = await docPage.evaluate(auditContrast);
   check(badDocs.length === 0, '[documents] contraste >= WCAG AA (sombre)', badDocs.slice(0, 6).join(' | '));
   const iconStyle = (id) => docPage.locator(id).evaluate((e) => { const c = getComputedStyle(e); return [c.width, c.backgroundColor, c.webkitMaskImage.slice(0, 20)]; });
