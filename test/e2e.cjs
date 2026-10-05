@@ -269,6 +269,8 @@ const auditContrast = () => {
     check(cards.n === 5 && cards.perRow >= 3 && cards.sameHeight, `[accueil cours] outils en grille de cartes (${theme})`, JSON.stringify(cards));
     check(parseFloat(cards.radius) >= 12 && cards.emptyHidden && cards.stretched, `[accueil cours] cartes arrondies, colonne vide masquée, carte entière cliquable (${theme})`, JSON.stringify(cards));
     check(cards.icon[0] === '30px' && cards.icon[1].startsWith('url('), `[accueil cours] icône vectorielle agrandie (${theme})`, cards.icon.join(' '));
+    const crumb = await page.evaluate(() => { const i = document.querySelector('.breadcrumb img[src*="/home2."]'); const c = getComputedStyle(i); return [c.webkitMaskImage.slice(0, 20), c.width]; });
+    check(crumb[0].startsWith('url(') && crumb[1] === '20px', `[accueil cours] maison du fil d'Ariane vectorielle (${theme})`, crumb.join(' '));
     const badCards = await page.evaluate(auditContrast);
     check(badCards.length === 0, `[accueil cours] contraste >= WCAG AA (${theme})`, badCards.slice(0, 6).join(' | '));
     await page.screenshot({ path: path.join(OUT, `course-home-${theme}.png`) });

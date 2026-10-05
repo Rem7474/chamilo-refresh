@@ -1,6 +1,8 @@
 /* Anciennes icônes bitmap de Chamilo remplacées par des icônes vectorielles monochromes (masque CSS). */
 html[data-bc-theme] img[src*="/home."]:not([src*="/courses/"]):not([src*="/upload/"]),
 html[data-bc-theme] img[src*="/home_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/home2."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/home2_"]:not([src*="/courses/"]):not([src*="/upload/"]),
 html[data-bc-theme] img[src*="/home1."]:not([src*="/courses/"]):not([src*="/upload/"]),
 html[data-bc-theme] img[src*="/home1_"]:not([src*="/courses/"]):not([src*="/upload/"]),
 html[data-bc-theme] img[src*="/homepage."]:not([src*="/courses/"]):not([src*="/upload/"]),
@@ -203,6 +205,8 @@ html[data-bc-theme] img.tool-img, html[data-bc-theme] .btn img { --bc-icon-color
 html[data-bc-theme] img[src*="/file_"] { --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 3v5h5%22/%3E%3Cpath d=%22M9 13h6M9 17h6%22/%3E%3C/svg%3E"); }
 html[data-bc-theme] img[src*="/home."],
 html[data-bc-theme] img[src*="/home_"],
+html[data-bc-theme] img[src*="/home2."],
+html[data-bc-theme] img[src*="/home2_"],
 html[data-bc-theme] img[src*="/home1."],
 html[data-bc-theme] img[src*="/home1_"],
 html[data-bc-theme] img[src*="/homepage."],

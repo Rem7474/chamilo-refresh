@@ -2,7 +2,7 @@
 
 ## Non publié
 
-- Icônes vectorielles pour la messagerie, le profil, l'organisation des cours, l'enseignant, la vignette de cours et la barre d'outils de l'agenda ; calendrier (FullCalendar) adapté au thème, texte des évènements colorés rendu lisible (blanc ou noir selon le fond).
+- Icônes vectorielles pour le fil d'Ariane (maison), la messagerie, le profil, l'organisation des cours, l'enseignant, la vignette de cours et la barre d'outils de l'agenda ; calendrier (FullCalendar) adapté au thème, texte des évènements colorés rendu lisible (blanc ou noir selon le fond).
 - Recherche : résultats du catalogue présentés sous forme de cartes dans la colonne des cours ; un cours avec lien d'accès est indiqué « Accès libre, sans inscription », sans lien « Inscription fermée » (au lieu de « L'inscription n'est pas autorisée »).
 - Mobile : texte d'invite de la barre de recherche raccourci sous 480 px ; tableaux de données sans liseré aux coins arrondis.
 - Tableaux de données et barres d'outils : bordure unique à la couleur du thème, coins arrondis, plus de quadrillage blanc entre les cellules.
