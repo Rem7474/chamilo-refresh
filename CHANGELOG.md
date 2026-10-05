@@ -1,6 +1,6 @@
 # Changelog
 
-## Non publié
+## 1.1.0
 
 - Icônes vectorielles pour le fil d'Ariane (maison), la messagerie, le profil, l'organisation des cours, l'enseignant, la vignette de cours et la barre d'outils de l'agenda ; calendrier (FullCalendar) adapté au thème, texte des évènements colorés rendu lisible (blanc ou noir selon le fond).
 - Recherche : résultats du catalogue présentés sous forme de cartes dans la colonne des cours ; un cours avec lien d'accès est indiqué « Accès libre, sans inscription », sans lien « Inscription fermée » (au lieu de « L'inscription n'est pas autorisée »).
