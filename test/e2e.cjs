@@ -276,6 +276,40 @@ const auditContrast = () => {
   const hit = await page.evaluate(() => { const b = document.querySelector('.course-tool').getBoundingClientRect(); const e = document.elementFromPoint(b.right - 10, b.bottom - 10); return e && e.id; });
   check(hit === 'istooldesc_3', '[accueil cours] un clic n’importe où sur la carte ouvre l’outil', String(hit));
 
+  // ---------- « Mes cours » : icônes de la colonne latérale, vignette et enseignants ; Agenda ----------
+  const agenda = fs.readFileSync(path.join(__dirname, 'mock-agenda.html'), 'utf8');
+  await ctx.route(`${ORIGIN}/main/calendar/agenda_js.php*`, (r) => r.fulfill({ contentType: 'text/html; charset=utf-8', body: agenda }));
+  for (const theme of ['dark', 'light']) {
+    await setSettings({ theme });
+    await page.goto(`${ORIGIN}/user_portal.php`, { waitUntil: 'load' });
+    await page.waitForSelector('.bc-hero');
+    const portalIcons = await page.evaluate(() => Object.fromEntries(['#ic-inbox', '#ic-compose', '#ic-profile', '#ic-order', '#ic-history', '#ic-teacher', '#ic-board'].map((sel) => {
+      const el = document.querySelector(sel); const cs = getComputedStyle(el);
+      return [sel, { mask: (cs.webkitMaskImage || '').startsWith('url('), w: cs.width, bg: cs.backgroundColor }];
+    })));
+    check(Object.values(portalIcons).every((i) => i.mask), `[mes cours] anciennes icônes remplacées par des icônes vectorielles (${theme})`, JSON.stringify(portalIcons));
+    check(portalIcons['#ic-board'].w === '48px' && portalIcons['#ic-teacher'].w === '16px', `[mes cours] vignette 48 px, icône enseignant 16 px (${theme})`, JSON.stringify(portalIcons));
+    const badPortal = await page.evaluate(auditContrast);
+    check(badPortal.length === 0, `[mes cours] contraste >= WCAG AA avec les nouvelles icônes (${theme})`, badPortal.slice(0, 6).join(' | '));
+    await page.screenshot({ path: path.join(OUT, `portal-icons-${theme}.png`) });
+
+    await page.goto(`${ORIGIN}/main/calendar/agenda_js.php?type=personal`, { waitUntil: 'load' });
+    await page.waitForTimeout(800);
+    const ag = await page.evaluate(() => {
+      const icons = ['#ic-cal', '#ic-week', '#ic-newev', '#ic-imp'].map((sel) => { const cs = getComputedStyle(document.querySelector(sel)); return [(cs.webkitMaskImage || '').startsWith('url('), cs.width]; });
+      const tb = getComputedStyle(document.querySelector('#toolbar-agenda'));
+      const btn = getComputedStyle(document.querySelector('.fc-month-button'));
+      const cell = getComputedStyle(document.querySelector('.fc-day.fc-widget-content'));
+      const today = getComputedStyle(document.querySelector('.fc-day.fc-today'));
+      return { icons, tb: tb.borderTopColor, btn: btn.backgroundColor, cell: cell.backgroundColor, today: today.backgroundColor };
+    });
+    check(ag.icons.every((i) => i[0] && i[1] === '22px'), `[agenda] icônes de la barre d’outils vectorielles (${theme})`, JSON.stringify(ag));
+    const badAgenda = await page.evaluate(auditContrast);
+    check(badAgenda.length === 0, `[agenda] contraste >= WCAG AA (${theme})`, badAgenda.slice(0, 6).join(' | '));
+    if (theme === 'dark') check(!/rgb\(2[0-9]{2}, 2[0-9]{2}, 2[0-9]{2}\)/.test(ag.cell + ag.btn + ag.today), '[agenda] calendrier sans fond clair en thème sombre', JSON.stringify(ag));
+    await page.screenshot({ path: path.join(OUT, `agenda-${theme}.png`) });
+  }
+
   // page d'accueil (index.php) : même barre, mode catalogue seul
   const i0 = mock.lastIndexOf('<div class="col-md-9">');
   const i1 = mock.lastIndexOf('</div></section>');

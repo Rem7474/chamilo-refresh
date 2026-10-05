@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Agenda - Grenoble INP - Chamilo (maquette de test)</title>
+<style>
+  /* styles par défaut de FullCalendar 3 (thème « unthemed ») et fonds blancs de Chamilo */
+  body { background: #fff; color: #333; font-family: sans-serif; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; }
+  .actions { background: #fff; padding: 8px 12px; margin: 16px 0; border: 1px solid #fff; }
+  .actions img { margin-right: 6px; }
+  .fc { direction: ltr; text-align: left; font-size: 1em; }
+  .fc table { border-collapse: collapse; border-spacing: 0; width: 100%; table-layout: fixed; }
+  .fc th, .fc td { border: 1px solid #ddd; padding: 0; vertical-align: top; }
+  .fc th { text-align: center; background: #f5f5f5; padding: 4px; }
+  .fc .fc-toolbar { text-align: center; margin-bottom: 1em; }
+  .fc .fc-toolbar .fc-left { float: left; } .fc .fc-toolbar .fc-right { float: right; }
+  .fc .fc-toolbar .fc-center { display: inline-block; }
+  .fc .fc-toolbar h2 { margin: 0; }
+  .fc .fc-clear { clear: both; }
+  .fc-button-group { display: inline-block; }
+  .fc-button { background: #f5f5f5 linear-gradient(#fff, #e6e6e6); border: 1px solid #ccc; color: #333; padding: 0 .6em; height: 2.1em; cursor: pointer; }
+  .fc-state-active { background: #ccc; box-shadow: inset 0 3px 5px rgba(0,0,0,.125); }
+  .fc-state-disabled { opacity: .65; }
+  .fc-icon::after { content: "‹"; } .fc-icon-right-single-arrow::after { content: "›"; }
+  .fc-row { position: relative; } .fc-row .fc-bg { position: absolute; inset: 0; } .fc-row .fc-bg table { height: 100%; }
+  .fc-row .fc-content-skeleton { position: relative; z-index: 4; }
+  .fc-row .fc-content-skeleton td { border: 0; background: none; }
+  .fc-day-number { text-align: right; padding: 2px 4px; }
+  .fc-state-highlight { background: #fcf8e3; }
+  .fc-other-month { background: #f9f9f9; opacity: .6; }
+  .fc-event { display: block; background: #3a87ad; border: 1px solid #3a87ad; color: #fff; border-radius: 3px; margin: 1px 2px; padding: 0 1px; font-size: .85em; text-decoration: none; }
+</style>
+</head>
+<body class="section-agenda">
+<section id="content-section"><div class="container">
+  <ul class="breadcrumb"><li class="active">Agenda</li></ul>
+  <div id="toolbar-agenda" class="actions"><div class="row"><div class="col-md-6">
+    <a href="#"><img id="ic-cal" src="/main/img/icons/32/calendar.png" alt="Calendrier" title="Calendrier"></a><a href="#"><img id="ic-week" src="/main/img/icons/32/week.png" alt="Liste d'événements" title="Liste d'événements"></a><a href="#"><img id="ic-newev" src="/main/img/icons/32/new_event.png" alt="Ajouter un événement" title="Ajouter un événement"></a><a href="#"><img id="ic-imp" src="/main/img/icons/32/import_calendar.png" alt="Import Outlook" title="Import Outlook"></a>
+  </div></div></div>
+  <div id="calendar" class="fc fc-ltr fc-unthemed">
+    <div class="fc-toolbar"><div class="fc-left"><button type="button" class="fc-today-button fc-button fc-state-default fc-state-disabled" disabled>aujourd'hui</button><div class="fc-button-group"><button type="button" class="fc-prev-button fc-button fc-state-default"><span class="fc-icon fc-icon-left-single-arrow"></span></button><button type="button" class="fc-next-button fc-button fc-state-default"><span class="fc-icon fc-icon-right-single-arrow"></span></button></div></div><div class="fc-right"><div class="fc-button-group"><button type="button" class="fc-month-button fc-button fc-state-default fc-state-active">Mois</button><button type="button" class="fc-agendaWeek-button fc-button fc-state-default">Semaine</button><button type="button" class="fc-agendaDay-button fc-button fc-state-default">Jour</button></div></div><div class="fc-center"><h2>Octobre 2026</h2></div><div class="fc-clear"></div></div>
+    <div class="fc-view-container"><div class="fc-view fc-month-view fc-basic-view"><table><thead class="fc-head"><tr><td class="fc-widget-header"><div class="fc-row fc-widget-header"><table><thead><tr><th class="fc-day-header fc-widget-header">Lun</th><th class="fc-day-header fc-widget-header">Mar</th><th class="fc-day-header fc-widget-header">Mer</th><th class="fc-day-header fc-widget-header">Jeu</th><th class="fc-day-header fc-widget-header">Ven</th><th class="fc-day-header fc-widget-header">Sam</th><th class="fc-day-header fc-widget-header">Dim</th></tr></thead></table></div></td></tr></thead>
+    <tbody class="fc-body"><tr><td class="fc-widget-content"><div class="fc-day-grid-container"><div class="fc-day-grid" id="grid"></div></div></td></tr></tbody></table></div></div>
+  </div>
+</div></section>
+<script>
+  const grid = document.getElementById('grid');
+  const start = new Date(2026, 8, 28);
+  for (let w = 0; w < 5; w++) {
+    let bg = '', nums = '', ev = '';
+    for (let d = 0; d < 7; d++) {
+      const day = new Date(start.getTime() + (w * 7 + d) * 864e5);
+      const other = day.getMonth() !== 9, today = day.getDate() === 5 && !other;
+      const cls = `${other ? 'fc-other-month' : ''} ${today ? 'fc-today fc-state-highlight' : ''}`;
+      bg += `<td class="fc-day fc-widget-content ${cls}"></td>`;
+      nums += `<td class="fc-day-number ${cls}">${day.getDate()}</td>`;
+      ev += today ? '<td class="fc-event-container"><a class="fc-day-grid-event fc-h-event fc-event course" style="background-color:#458B00;border-color:#458B00"><div class="fc-content"><span class="fc-time">23:59</span> <span class="fc-title">Remise du travail Exercice</span></div></a></td>'
+        : (w === 2 && d === 2 ? '<td class="fc-event-container"><a class="fc-day-grid-event fc-h-event fc-event"><div class="fc-content"><span class="fc-time">10:00</span> <span class="fc-title">Réunion</span></div></a></td>' : '<td></td>');
+    }
+    grid.insertAdjacentHTML('beforeend', `<div class="fc-row fc-week fc-widget-content" style="height:110px"><div class="fc-bg"><table><tbody><tr>${bg}</tr></tbody></table></div><div class="fc-content-skeleton"><table><thead><tr>${nums}</tr></thead><tbody><tr>${ev}</tr></tbody></table></div></div>`);
+  }
+</script>
+</body>
+</html>

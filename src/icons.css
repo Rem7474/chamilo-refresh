@@ -161,6 +161,32 @@ html[data-bc-theme] img[src*="/file_jpg."]:not([src*="/courses/"]):not([src*="/u
 html[data-bc-theme] img[src*="/file_jpg_"]:not([src*="/courses/"]):not([src*="/upload/"]),
 html[data-bc-theme] img[src*="/file_gif."]:not([src*="/courses/"]):not([src*="/upload/"]),
 html[data-bc-theme] img[src*="/file_gif_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/inbox."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/inbox_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/inbox_message."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/inbox_message_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/new-message."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/new-message_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/new_message."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/new_message_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/edit-profile."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/edit-profile_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/order-course."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/order-course_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/history-course."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/history-course_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/teacher."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/teacher_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/graduation."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/graduation_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/blackboard."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/blackboard_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/week."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/week_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/new_event."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/new_event_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/import_calendar."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/import_calendar_"]:not([src*="/courses/"]):not([src*="/upload/"]),
 html[data-bc-theme] img[src*="/file_"]:not([src*="/courses/"]):not([src*="/upload/"]) {
   content: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
   box-sizing: content-box;
@@ -413,3 +439,55 @@ html[data-bc-theme] img[src*="/file_gif."],
 html[data-bc-theme] img[src*="/file_gif_"] {
   --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 3v5h5%22/%3E%3Cpath d=%22M9 13h6M9 17h6%22/%3E%3C/svg%3E"); --bc-icon-color: #a77bff;
 }
+html[data-bc-theme] img[src*="/inbox."],
+html[data-bc-theme] img[src*="/inbox_"],
+html[data-bc-theme] img[src*="/inbox_message."],
+html[data-bc-theme] img[src*="/inbox_message_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22M22%2012h-6l-2%203h-4l-2-3H2%22/%3E%3Cpath%20d=%22M5.5%205h13L22%2012v6a2%202%200%200%201-2%202H4a2%202%200%200%201-2-2v-6z%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/new-message."],
+html[data-bc-theme] img[src*="/new-message_"],
+html[data-bc-theme] img[src*="/new_message."],
+html[data-bc-theme] img[src*="/new_message_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22M12%2020h9%22/%3E%3Cpath%20d=%22M16.5%203.5a2.1%202.1%200%200%201%203%203L7%2019l-4%201%201-4z%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/edit-profile."],
+html[data-bc-theme] img[src*="/edit-profile_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Ccircle%20cx=%229%22%20cy=%228%22%20r=%224%22/%3E%3Cpath%20d=%22M2%2020c0-3.5%203-6%207-6%22/%3E%3Cpath%20d=%22M14%2020h7%22/%3E%3Cpath%20d=%22M17.5%2011.5a2%202%200%200%201%202.8%202.8L14%2020.5l-3%20.5.5-3z%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/order-course."],
+html[data-bc-theme] img[src*="/order-course_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22M7%204v16M3%2016l4%204%204-4M17%2020V4M13%208l4-4%204%204%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/history-course."],
+html[data-bc-theme] img[src*="/history-course_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22M3%2012a9%209%200%201%200%203-6.7L3%208%22/%3E%3Cpath%20d=%22M3%203v5h5%22/%3E%3Cpath%20d=%22M12%207v5l3%202%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/teacher."],
+html[data-bc-theme] img[src*="/teacher_"],
+html[data-bc-theme] img[src*="/graduation."],
+html[data-bc-theme] img[src*="/graduation_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22M22%2010%2012%205%202%2010l10%205z%22/%3E%3Cpath%20d=%22M6%2012v5c3%202.5%209%202.5%2012%200v-5%22/%3E%3Cpath%20d=%22M22%2010v6%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/blackboard."],
+html[data-bc-theme] img[src*="/blackboard_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Crect%20x=%223%22%20y=%224%22%20width=%2218%22%20height=%2212%22%20rx=%222%22/%3E%3Cpath%20d=%22M8%2020h8M12%2016v4M7%209h6M7%2012h3%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/week."],
+html[data-bc-theme] img[src*="/week_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22M8%206h13M8%2012h13M8%2018h13M3%206h.01M3%2012h.01M3%2018h.01%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/new_event."],
+html[data-bc-theme] img[src*="/new_event_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Crect%20x=%223%22%20y=%225%22%20width=%2218%22%20height=%2216%22%20rx=%222%22/%3E%3Cpath%20d=%22M16%203v4M8%203v4M3%2011h18M12%2014v5M9.5%2016.5h5%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/import_calendar."],
+html[data-bc-theme] img[src*="/import_calendar_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Crect%20x=%223%22%20y=%225%22%20width=%2218%22%20height=%2216%22%20rx=%222%22/%3E%3Cpath%20d=%22M16%203v4M8%203v4M3%2011h18M12%2014v5M9.5%2017l2.5%202.5%202.5-2.5%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] .nav-stacked li > a > img { margin-right: 8px; --bc-icon-color: var(--bc-accent); }
+html[data-bc-theme] .list-teachers img { width: 16px !important; height: 16px !important; margin-right: 4px; --bc-icon-color: var(--bc-muted); }
+html[data-bc-theme] a.thumbnail > img[src*="/blackboard."] { display: block; margin: 0 auto; width: 48px !important; height: 48px !important; --bc-icon-color: var(--bc-accent); opacity: 1; }
+html[data-bc-theme] #toolbar-agenda a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin: 0 4px 0 0; border-radius: 10px; --bc-icon-color: var(--bc-text); }
+html[data-bc-theme] #toolbar-agenda a:hover { background: var(--bc-surface-2); --bc-icon-color: var(--bc-accent); }
+html[data-bc-theme] #toolbar-agenda img { width: 22px !important; height: 22px !important; }

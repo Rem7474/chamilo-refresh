@@ -60,7 +60,7 @@
   const OWN_UI = '.bc-hero, .bc-hero *';
 
   function fixContrast(theme) {
-    document.querySelectorAll('.bc-fix, .bc-bg').forEach((el) => el.classList.remove('bc-fix', 'bc-bg'));
+    document.querySelectorAll('.bc-fix, .bc-bg, .bc-ink, .bc-paper').forEach((el) => el.classList.remove('bc-fix', 'bc-bg', 'bc-ink', 'bc-paper'));
     if (!theme || !document.body) return;
 
     const pageBg = hexToRgb(token('--bc-bg', '#ffffff'));
@@ -103,7 +103,12 @@
       const base = fg && effectiveBg(el);
       if (!base) continue;
       const current = contrast(fg, base);
-      if (current < 4.5 && contrast(themeText, base) > current) el.classList.add('bc-fix');
+      if (current >= 4.5) continue;
+      // Fonds colorés (évènements du calendrier…) : si le texte du thème ne suffit pas, on prend le meilleur de blanc ou noir.
+      const options = [['bc-fix', themeText], ['bc-paper', [255, 255, 255]], ['bc-ink', [0, 0, 0]]]
+        .map(([cls, rgb]) => [cls, contrast(rgb, base)]);
+      const best = options[0][1] >= 4.5 ? options[0] : options.reduce((x, y) => (y[1] > x[1] ? y : x));
+      if (best[1] > current) el.classList.add(best[0]);
     }
   }
 

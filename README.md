@@ -7,6 +7,7 @@ Extension Chrome / Edge (Manifest V3) pour https://chamilo.grenoble-inp.fr/.
 - **Favoris** : étoile à côté de chaque cours, favoris remontés en tête, filtre « Favoris ». Synchronisés via le compte du navigateur.
 - **Accueil d'un cours** : les outils du cours sont affichés en cartes cliquables avec icône vectorielle.
 - **Page Documents** : arborescence des dossiers dans une colonne à gauche, icônes vectorielles à la place des anciens GIF/PNG.
+- **Mes cours et Agenda** : icônes vectorielles (messagerie, profil, enseignant, outils de l'agenda) et calendrier au thème.
 - **Thème sombre / clair / auto**, couleur d'accent au choix ; les contrastes sont calculés pour rester lisibles quelle que soit la couleur ; les fonds blancs et textes trop clairs imposés par le site sont repérés et corrigés.
 - **Correction des textes illisibles** : les couleurs écrites en dur dans le contenu des cours (collées depuis Word, etc.) sont remplacées lorsqu'elles sont illisibles sur le nouveau fond.
 - Aucune donnée envoyée à l'extérieur, aucune police ou ressource distante ([confidentialité](PRIVACY.md)).
