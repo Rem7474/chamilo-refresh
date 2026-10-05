@@ -92,6 +92,24 @@ const auditContrast = () => {
     check(bad.length === 0, `[connexion] contraste >= WCAG AA (${theme})`, bad.slice(0, 5).join(' | '));
   }
 
+  // ---------- Maquette « Documents » : fonds blancs et texte gris clair du site ----------
+  const docs = fs.readFileSync(path.join(__dirname, 'mock-documents.html'), 'utf8');
+  await ctx.route(`${ORIGIN}/main/document/document.php*`, (r) => r.fulfill({ contentType: 'text/html; charset=utf-8', body: docs }));
+  const docPage = await ctx.newPage();
+  await setSettings({ theme: 'dark' });
+  await docPage.goto(`${ORIGIN}/main/document/document.php`, { waitUntil: 'load' });
+  const lightBgs = await docPage.evaluate(() => [...document.querySelectorAll('.actions, .data_table tr, .data_table td, .data_table th')]
+    .filter((e) => { const m = getComputedStyle(e).backgroundColor.match(/\d+/g).map(Number); return (m[0] + m[1] + m[2]) / 3 > 140; })
+    .map((e) => e.tagName + '.' + e.className));
+  check(lightBgs.length === 0, '[documents] plus de fond clair (barre d’outils, lignes, en-tête)', lightBgs.join(','));
+  const badDocs = await docPage.evaluate(auditContrast);
+  check(badDocs.length === 0, '[documents] contraste >= WCAG AA (sombre)', badDocs.slice(0, 6).join(' | '));
+  await docPage.screenshot({ path: path.join(OUT, 'documents-dark.png') });
+  await setSettings({ theme: 'light' });
+  await docPage.reload({ waitUntil: 'load' });
+  check(await docPage.locator('.bc-bg').count() === 0, '[documents] thème clair : aucun fond réécrit');
+  await docPage.close();
+
   // ---------- Maquette « Mes cours » ----------
   const page = await ctx.newPage();
   page.on('pageerror', (e) => { check(false, 'erreur JS dans la page', e.message); });

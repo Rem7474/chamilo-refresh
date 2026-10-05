@@ -68,6 +68,7 @@ html[data-bc-theme] hr, html[data-bc-theme] .page-header, html[data-bc-theme] le
 html[data-bc-theme] a:not(.btn) { color: var(--bc-link) !important; }
 html[data-bc-theme] a:not(.btn):hover { filter: brightness(1.15); text-decoration: underline; }
 html[data-bc-theme] .bc-fix { color: var(--bc-text) !important; }
+html[data-bc-theme] .bc-bg { background-color: var(--bc-surface) !important; }
 html[data-bc-theme] code, html[data-bc-theme] pre, html[data-bc-theme] kbd {
   background: var(--bc-surface-2) !important;
   color: var(--bc-text) !important;
@@ -206,6 +207,12 @@ html[data-bc-theme] .table-bordered > tbody > tr > td {
   border-color: var(--bc-border) !important;
 }
 html[data-bc-theme] .table > thead > tr > th { background: var(--bc-surface-2) !important; color: var(--bc-text) !important; }
+html[data-bc-theme] .data_table th { background: var(--bc-surface-2) !important; color: var(--bc-text) !important; }
+html[data-bc-theme] .data_table tr, html[data-bc-theme] .data_table td,
+html[data-bc-theme] .actions, html[data-bc-theme] .new_actions, html[data-bc-theme] .table-responsive {
+  background-color: var(--bc-surface) !important;
+  color: var(--bc-text);
+}
 html[data-bc-theme] .table-striped > tbody > tr:nth-of-type(odd) { background: var(--bc-surface-2) !important; }
 html[data-bc-theme] .table-hover > tbody > tr:hover { background: var(--bc-surface-2) !important; }
 

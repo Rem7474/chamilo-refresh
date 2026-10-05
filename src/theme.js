@@ -53,37 +53,55 @@
     root.style.setProperty('--bc-on-accent', onAccent);
   }
 
-  // Inline colours written by teachers (pasted from Word, etc.) can be unreadable on the new
-  // background. Flag the offenders so the stylesheet can swap in the theme text colour.
-  function fixInlineContrast(theme) {
-    document.querySelectorAll('.bc-fix').forEach((el) => el.classList.remove('bc-fix'));
-    if (!theme || !settings.fixContrast || !document.body) return;
+  // Chamilo's own stylesheets paint white rows, toolbars and light-grey text that the dark theme
+  // cannot reach with selectors alone. Measure the rendered result instead: near-white backgrounds
+  // are flagged `.bc-bg`, and text that stays unreadable is flagged `.bc-fix`.
+  const SKIP_TAGS = /^(SCRIPT|STYLE|NOSCRIPT|IMG|SVG|CANVAS|VIDEO|IFRAME|INPUT|BUTTON|SELECT|TEXTAREA|OPTION|HTML|BODY)$/;
+  const OWN_UI = '.bc-hero, .bc-hero *';
+
+  function fixContrast(theme) {
+    document.querySelectorAll('.bc-fix, .bc-bg').forEach((el) => el.classList.remove('bc-fix', 'bc-bg'));
+    if (!theme || !document.body) return;
 
     const pageBg = hexToRgb(token('--bc-bg', '#ffffff'));
     const themeText = hexToRgb(token('--bc-text', '#000000'));
-    const candidates = document.body.querySelectorAll('[style*="color"], font[color]');
+    const all = [...document.body.querySelectorAll('*')].slice(0, 6000);
 
-    for (const el of [...candidates].slice(0, 4000)) {
-      const fg = parseCssColor(getComputedStyle(el).color);
-      if (!fg) continue;
+    if (theme === 'dark') {
+      for (const el of all) {
+        if (SKIP_TAGS.test(el.tagName) || el.matches(OWN_UI) || el.closest('.btn, .label, .badge, .navbar')) continue;
+        const cs = getComputedStyle(el);
+        if (cs.backgroundImage !== 'none') continue;
+        const bg = parseCssColor(cs.backgroundColor);
+        if (bg && bg[3] >= 0.9 && luminance(bg) > 0.55) el.classList.add('bc-bg');
+      }
+    }
 
+    if (!settings.fixContrast) return;
+    const effectiveBg = (el) => {
       const layers = [];
-      let skip = false;
       for (let n = el; n; n = n.parentElement) {
         const cs = getComputedStyle(n);
-        if (cs.backgroundImage !== 'none') { skip = true; break; }
+        if (cs.backgroundImage !== 'none') return null;
         const bg = parseCssColor(cs.backgroundColor);
-        if (!bg) { skip = true; break; }
+        if (!bg) return null;
         if (bg[3] > 0) layers.push(bg);
         if (bg[3] >= 1) break;
       }
-      if (skip) continue;
-
       let base = pageBg;
       for (let i = layers.length - 1; i >= 0; i--) {
         const [r, g, b, a] = layers[i];
         base = [r * a + base[0] * (1 - a), g * a + base[1] * (1 - a), b * a + base[2] * (1 - a)];
       }
+      return base;
+    };
+
+    for (const el of all) {
+      if (SKIP_TAGS.test(el.tagName) || el.matches(OWN_UI)) continue;
+      if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+      const fg = parseCssColor(getComputedStyle(el).color);
+      const base = fg && effectiveBg(el);
+      if (!base) continue;
       const current = contrast(fg, base);
       if (current < 4.5 && contrast(themeText, base) > current) el.classList.add('bc-fix');
     }
@@ -98,7 +116,7 @@
       delete root.dataset.bcTheme;
       ['--bc-accent', '--bc-link', '--bc-on-accent'].forEach((p) => root.style.removeProperty(p));
     }
-    if (document.readyState !== 'loading') fixInlineContrast(theme);
+    if (document.readyState !== 'loading') fixContrast(theme);
   }
 
   function merge(partial) {
@@ -122,6 +140,6 @@
   });
 
   prefersDark.addEventListener('change', apply);
-  document.addEventListener('DOMContentLoaded', () => fixInlineContrast(resolvedTheme()));
-  window.addEventListener('load', () => fixInlineContrast(resolvedTheme()));
+  document.addEventListener('DOMContentLoaded', () => fixContrast(resolvedTheme()));
+  window.addEventListener('load', () => fixContrast(resolvedTheme()));
 })();
