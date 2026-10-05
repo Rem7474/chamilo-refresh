@@ -60,6 +60,23 @@
     return [...inputs].find((i) => /recherch|search/i.test(`${i.placeholder} ${i.name} ${i.id}`));
   }
 
+  const WIDGET = 'select, .select2-container, .chosen-container, .bootstrap-select';
+  const SIDEBAR = '.menu-column, aside, .sidebar, .navbar, .breadcrumb';
+
+  // Sélecteurs de recherche natifs (select, select2, chosen) situés dans la colonne principale, avant la première carte.
+  function findNativeSelects(units) {
+    const first = units.map((u) => u.el).sort((a, b) => (a.compareDocumentPosition(b) & 4 ? -1 : 1))[0];
+    const widgets = [...document.querySelectorAll(`#content-section ${WIDGET.split(', ').join(', #content-section ')}`)]
+      .filter((w) => !w.closest(SIDEBAR) && !units.some((u) => u.el.contains(w)))
+      .filter((w) => !w.parentElement.closest(WIDGET))
+      .filter((w) => w.tagName !== 'SELECT' || !w.nextElementSibling || !w.nextElementSibling.matches(WIDGET))
+      .filter((w) => first.compareDocumentPosition(w) & 2);
+    const looksLikeSearch = (w) => /recherch|search|cours|course/i.test(
+      `${w.id} ${w.className} ${w.getAttribute('name') || ''} ${w.getAttribute('data-placeholder') || ''}`);
+    const chosen = widgets.filter(looksLikeSearch);
+    return chosen.length ? chosen : widgets;
+  }
+
   const svg = (d) =>
     `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">${d}</svg>`;
 
@@ -75,6 +92,13 @@
     const native = findNativeSearch();
     const nativeForm = native && native.form;
     if (native) (native.closest('.panel, .well') || nativeForm || native).classList.add('bc-native-search');
+    for (const w of findNativeSelects(units)) {
+      const wrapper = w.closest('.form-group, .panel, .well, form');
+      const others = wrapper ? [...wrapper.querySelectorAll('input:not([type=hidden]), button, textarea, select')].filter((x) => !w.contains(x) && !x.closest(WIDGET)) : [1];
+      (others.length ? w : wrapper).classList.add('bc-native-search');
+      const sibling = w.nextElementSibling;
+      if (sibling && sibling.matches(WIDGET)) sibling.classList.add('bc-native-search');
+    }
 
     const hero = document.createElement('div');
     hero.className = 'bc-hero';

@@ -91,7 +91,8 @@ const auditContrast = () => {
   await page.waitForSelector('.bc-hero');
 
   check(await page.locator('.bc-hero-input').evaluate((e) => document.activeElement === e), 'champ de recherche focus à l’arrivée');
-  check(!(await page.locator('.bc-native-search').isVisible()), 'recherche native masquée (remplacée par la grande barre)');
+  check(await page.locator('.bc-native-search:visible').count() === 0, 'recherche native masquée (remplacée par la grande barre)');
+  check(await page.locator('#content-section select:visible').count() === 0, 'aucun sélecteur natif visible au-dessus des cours');
   const heroBox = await page.locator('.bc-hero').boundingBox();
   check(heroBox.y < 360 && heroBox.width > 900, 'barre de recherche large et en haut de page', JSON.stringify(heroBox));
   check(await page.locator('.bc-card').count() === 3, '3 cours détectés');
