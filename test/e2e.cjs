@@ -101,6 +101,25 @@ const auditContrast = () => {
   const docPage = await ctx.newPage();
   await setSettings({ theme: 'dark' });
   await docPage.goto(`${ORIGIN}/main/document/document.php`, { waitUntil: 'load' });
+  await docPage.waitForSelector('.bc-tree');
+  const tree = await docPage.evaluate(() => ({
+    names: [...document.querySelectorAll('.bc-tree-link')].map((a) => a.textContent),
+    current: document.querySelector('.bc-tree-current').textContent,
+    href: [...document.querySelectorAll('.bc-tree-link')].find((a) => a.textContent === 'COURS').href,
+    nativeVisible: getComputedStyle(document.querySelector('#selector')).display !== 'none',
+    nested: !!document.querySelector('.bc-tree-root .bc-tree-list .bc-tree-list .bc-tree-link'),
+    corrigesHidden: [...document.querySelectorAll('.bc-tree-link')].find((a) => a.textContent === 'Corrigés').closest('ul').hidden,
+  }));
+  check(tree.names.join('|') === 'Documents|COURS|SUPPORTS|TD|Corrigés', '[documents] arborescence construite depuis la liste des dossiers', tree.names.join('|'));
+  check(tree.current === 'SUPPORTS', '[documents] dossier courant mis en évidence');
+  check(/[?&]id=1198429/.test(tree.href) && /cidReq=ESISAR5AMMB501/.test(tree.href), '[documents] liens de l’arborescence conservent le cours et l’identifiant du dossier', tree.href);
+  check(!tree.nativeVisible && tree.nested, '[documents] sélecteur natif masqué, dossiers imbriqués');
+  check(await docPage.locator('.bc-tree-link:visible', { hasText: 'TD' }).count() === 1 && tree.corrigesHidden, '[documents] sous-dossiers du dossier courant visibles, niveaux plus profonds repliés');
+  const tdToggle = docPage.locator('.bc-tree-toggle:not(.bc-tree-gap)').last();
+  await tdToggle.click();
+  check(await docPage.locator('.bc-tree-link:visible', { hasText: 'Corrigés' }).count() === 1, '[documents] une branche se déplie');
+  await tdToggle.click();
+  check(await docPage.locator('.bc-tree-link:visible', { hasText: 'Corrigés' }).count() === 0, '[documents] une branche se replie');
   const lightBgs = await docPage.evaluate(() => [...document.querySelectorAll('.actions, .data_table tr, .data_table td, .data_table th')]
     .filter((e) => { const m = getComputedStyle(e).backgroundColor.match(/\d+/g).map(Number); return (m[0] + m[1] + m[2]) / 3 > 140; })
     .map((e) => e.tagName + '.' + e.className));

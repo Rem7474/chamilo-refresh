@@ -1,0 +1,36 @@
+.bc-native-select { display: none !important; }
+
+.bc-docs-layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 20px; align-items: start; clear: both; }
+.bc-docs-main { min-width: 0; }
+@media (max-width: 991px) { .bc-docs-layout { grid-template-columns: 1fr; } }
+
+.bc-tree {
+  position: sticky;
+  top: 12px;
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+  padding: 12px 8px;
+  background: var(--bc-surface);
+  border: 1px solid var(--bc-border);
+  border-radius: 14px;
+  box-shadow: var(--bc-shadow);
+  color: var(--bc-text);
+}
+.bc-tree-title { padding: 0 8px 8px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--bc-muted); }
+.bc-tree-list { margin: 0; padding: 0; list-style: none; }
+.bc-tree-list .bc-tree-list { padding-left: 14px; border-left: 1px solid var(--bc-border); margin-left: 12px; }
+.bc-tree-list[hidden] { display: none; }
+.bc-tree-row { display: flex; align-items: center; gap: 2px; }
+.bc-tree-toggle { flex: none; width: 22px; height: 28px; padding: 0; border: 0; background: transparent; color: var(--bc-muted); cursor: pointer; }
+.bc-tree-toggle:not(.bc-tree-gap)::before { content: '▸'; display: inline-block; font-size: 12px; transition: transform .12s; }
+.bc-tree-toggle[aria-expanded="true"]::before { transform: rotate(90deg); }
+html[data-bc-theme] .bc-tree a.bc-tree-link {
+  display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;
+  padding: 5px 8px; border-radius: 8px;
+  color: var(--bc-text) !important; text-decoration: none; font-size: 14px;
+  overflow-wrap: anywhere;
+}
+html[data-bc-theme] .bc-tree a.bc-tree-link svg { flex: none; color: var(--bc-muted); }
+html[data-bc-theme] .bc-tree a.bc-tree-link:hover { background: var(--bc-surface-2); filter: none; text-decoration: none; }
+html[data-bc-theme] .bc-tree a.bc-tree-link.bc-tree-current { background: var(--bc-accent, #7c8cff); color: var(--bc-on-accent, #0b0d14) !important; font-weight: 600; }
+html[data-bc-theme] .bc-tree a.bc-tree-link.bc-tree-current svg { color: inherit; }

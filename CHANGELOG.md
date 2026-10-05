@@ -4,6 +4,9 @@
 
 - Résultats de la recherche native (catalogue complet) affichés sous la barre, y compris les cours non inscrits.
 - Barre de recherche aussi sur la page d'accueil.
+- Page Documents : arborescence des dossiers dans une colonne latérale (construite depuis la liste « Répertoire courant », qui est masquée).
+- Anciennes icônes bitmap (types de fichiers, aperçu, téléchargement, outils du cours) remplacées par des icônes vectorielles au thème ; images du contenu des cours inchangées.
+- Fonds blancs et textes gris clair des tableaux et barres d'outils corrigés en thème sombre (mesure du rendu réel, pas seulement des règles fixes).
 - Résultats unifiés : compteur unique (vos cours + catalogue), cours déjà affichés non répétés dans le catalogue, un seul message quand rien ne correspond.
 - Contour de focus de la barre de recherche limité à l'encadré arrondi.
 - Sélecteurs natifs de recherche masqués ; cours sans lien d'accès listés et recherchables.

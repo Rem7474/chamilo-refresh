@@ -37,6 +37,18 @@
     },
     {
       "matches": [
+        "https://chamilo.grenoble-inp.fr/main/document/*"
+      ],
+      "css": [
+        "src/documents.css"
+      ],
+      "js": [
+        "src/documents.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
         "https://chamilo.grenoble-inp.fr/*"
       ],
       "css": [

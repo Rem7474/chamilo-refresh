@@ -23,6 +23,10 @@
       <button class="btn btn-default" type="submit">Rechercher</button>
     </form></div>
   </div></div>
+  <form class="form-horizontal" action="/main/document/document.php?cidReq=ESISAR5AMMB501&amp;id_session=0&amp;gidReq=0" method="get" name="selector" id="selector">
+    <label for="selector_id">Répertoire courant</label>
+    <select name="id" id="selector_id" onchange="document.selector.submit();"><option value="/">Documents</option><option value="1198429"> — COURS</option><option value="957606" selected="selected"> — SUPPORTS</option><option value="957607"> — — TD</option><option value="957608"> — — — Corrigés</option></select>
+  </form>
   <div class="table-responsive"><table class="data_table table" id="student_table">
     <tbody>
       <tr class="row_odd"><th><a href="#">Type</a></th><th><a href="#">Nom</a> ↓</th><th><a href="#">Taille</a></th><th><a href="#">Date</a></th></tr>
