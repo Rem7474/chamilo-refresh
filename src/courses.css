@@ -28,7 +28,9 @@
 }
 .bc-hero-row { display: flex; align-items: center; gap: 14px; }
 .bc-hero-icon { display: flex; color: var(--bc-accent, #7c8cff); }
-html .bc-hero .bc-hero-input {
+html .bc-hero .bc-hero-input,
+html[data-bc-theme] .bc-hero input.bc-hero-input:focus,
+html[data-bc-theme] .bc-hero input.bc-hero-input:focus-visible {
   flex: 1;
   min-width: 0;
   height: 52px;
@@ -118,12 +120,10 @@ html[data-bc-theme="light"] .bc-star:hover,
 html[data-bc-theme="light"] .bc-star[aria-pressed="true"] { color: #b45309; }
 
 .bc-empty {
-  margin: 0 15px 20px;
-  padding: 18px 20px;
-  border: 1px dashed var(--bc-border);
-  border-radius: 12px;
+  margin: -12px 15px 20px;
+  padding: 4px 20px;
   color: var(--bc-muted);
-  text-align: center;
+  font-size: 15px;
 }
 
 .bc-card.bc-closed { opacity: .72; }

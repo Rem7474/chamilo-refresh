@@ -134,10 +134,11 @@ const auditContrast = () => {
   await page.goBack({ waitUntil: 'load' });
   await page.waitForSelector('.bc-hero');
   await page.keyboard.type('zzzz');
-  check(await page.locator('.bc-empty').isVisible(), 'message "aucun résultat"');
   await page.evaluate(() => { window.__noReload = true; });
   await page.keyboard.press('Enter');
-  await page.waitForFunction(() => /Aucun résultat dans le catalogue/.test(document.querySelector('.bc-status').textContent), null, { timeout: 5000 });
+  await page.waitForFunction(() => !document.querySelector('.bc-empty').hidden, null, { timeout: 5000 });
+  check(/Aucun cours ne correspond/.test(await page.locator('.bc-empty').textContent()), 'aucun résultat ni local ni catalogue : un seul message');
+  check(await page.locator('.bc-catalog:visible').count() === 0, 'aucun résultat : pas de panneau catalogue vide');
   check(await page.evaluate(() => window.__noReload === true), 'Entrée sans résultat : la page n’est pas rechargée');
 
   // cours hors de mes cours : résultats du catalogue via la recherche native
@@ -145,6 +146,10 @@ const auditContrast = () => {
   await page.keyboard.type('IN513');
   await page.waitForSelector('.bc-catalog a', { timeout: 5000 });
   check(await page.locator('.bc-card:visible').count() === 0, 'catalogue : aucun de mes cours ne correspond à IN513');
+  check(await page.locator('.bc-empty:visible').count() === 0, 'catalogue : pas de message « aucun cours » quand le catalogue répond');
+  check(/0 \/ 4 de vos cours · 1 dans le catalogue/.test(await page.locator('.bc-count').textContent()), 'catalogue : compteur unique local + catalogue');
+  const outline = await page.locator('.bc-hero-input').evaluate((el) => { el.focus(); const c = getComputedStyle(el); return [c.outlineStyle, c.borderTopWidth, c.boxShadow]; });
+  check(outline[0] === 'none' && outline[1] === '0px' && outline[2] === 'none', 'barre : aucun contour carré au focus', JSON.stringify(outline));
   check((await page.locator('.bc-catalog').textContent()).includes('inscription'), 'catalogue : cours non inscrit affiché sous la barre');
   check(await page.locator('.bc-native-search:visible').count() === 0, 'catalogue : bloc natif toujours masqué');
   check(searchPosts.some((b) => /search_course=1/.test(b) && /sec_token=tok123/.test(b) && /search_term=IN513/.test(b)), 'catalogue : requête identique au formulaire natif (POST, jeton inclus)');
@@ -190,7 +195,7 @@ const auditContrast = () => {
   check(true, 'accueil : résultats du catalogue affichés');
   await page.locator('.bc-hero-input').fill('');
   await page.keyboard.type('zzzz');
-  await page.waitForFunction(() => /Aucun résultat dans le catalogue/.test(document.querySelector('.bc-status').textContent), null, { timeout: 6000 });
+  await page.waitForFunction(() => !document.querySelector('.bc-empty').hidden, null, { timeout: 6000 });
   check(await page.locator('.bc-catalog:visible').count() === 0, 'accueil : message clair quand le catalogue ne renvoie rien');
   await page.locator('.bc-hero-input').fill('');
   await page.keyboard.type('IN513');

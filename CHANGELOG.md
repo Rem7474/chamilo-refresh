@@ -4,6 +4,8 @@
 
 - Résultats de la recherche native (catalogue complet) affichés sous la barre, y compris les cours non inscrits.
 - Barre de recherche aussi sur la page d'accueil.
+- Résultats unifiés : compteur unique (vos cours + catalogue), cours déjà affichés non répétés dans le catalogue, un seul message quand rien ne correspond.
+- Contour de focus de la barre de recherche limité à l'encadré arrondi.
 - Sélecteurs natifs de recherche masqués ; cours sans lien d'accès listés et recherchables.
 
 ## 1.0.0

@@ -151,12 +151,12 @@
     else if (container) container.prepend(hero);
     else if (lca) lca.before(hero);
     else nativeBlock.before(hero);
-    if (lca) lca.before(empty);
 
     const catalog = document.createElement('section');
     catalog.className = 'bc-catalog';
     catalog.hidden = true;
-    hero.after(catalog);
+    hero.after(empty);
+    empty.after(catalog);
 
     for (const u of units) {
       u.el.classList.add('bc-card');
@@ -214,20 +214,34 @@
         u.star.title = u.star.ariaLabel = fav ? 'Retirer des favoris' : 'Ajouter aux favoris';
       }
       sortFavoritesFirst();
-      const shown = visibleUnits().length;
-      count.textContent = shown === units.length ? `${units.length} cours` : `${shown} / ${units.length} cours`;
-      empty.hidden = shown > 0 || !units.length;
-      empty.textContent = favoritesOnly && !terms.length
-        ? 'Aucun favori pour le moment : cliquez sur ☆ à côté d’un cours.'
-        : `Aucun de vos cours ne correspond à « ${input.value.trim()} ».${nativeForm ? ' Les résultats du catalogue Chamilo s’affichent dessous.' : ''}`;
+      renderCatalog();
       setActive(terms.length ? 0 : -1);
+    }
+
+    function updateSummary() {
+      const shown = visibleUnits().length;
+      const term = input.value.trim();
+      const extra = catalogRows.length;
+      count.textContent = (shown === units.length ? `${units.length} cours` : `${shown} / ${units.length} de vos cours`)
+        + (extra ? ` · ${extra} dans le catalogue` : '');
+      const pending = Boolean(nativeForm) && term.length >= 2 && (inFlight || searchTerm !== term);
+      const nothing = (catalogOnly ? term.length >= 2 : units.length > 0 || term.length > 0) && shown === 0 && !extra && !pending;
+      empty.hidden = !nothing;
+      if (!nothing) return;
+      empty.textContent = favoritesOnly && !term
+        ? 'Aucun favori pour le moment : cliquez sur ☆ à côté d’un cours.'
+        : `Aucun cours ne correspond à « ${term} ».`;
     }
 
     // Recherche dans tout le catalogue : même requête que le formulaire natif, envoyée en arrière-plan (pas de rechargement).
     let searchSeq = 0;
     let searchTerm = '';
     let searching = Promise.resolve();
+    let allCatalogRows = [];
     let catalogRows = [];
+    let inFlight = false;
+    const localCodes = () => new Set(visibleUnits().map((u) => u.key.split(':')[0].toLowerCase()));
+    const rowCode = (r) => ((r.href.match(/\/courses\/([^/]+)\//) || [])[1] || '').toLowerCase();
 
     function setStatus(text) { status.textContent = text; }
 
@@ -249,11 +263,14 @@
     }
 
     function renderCatalog() {
+      const local = localCodes();
+      catalogRows = allCatalogRows.filter((r) => !rowCode(r) || !local.has(rowCode(r)));
       catalog.hidden = !catalogRows.length;
+      updateSummary();
       if (!catalogRows.length) { catalog.replaceChildren(); return; }
       const title = document.createElement('h3');
       title.className = 'bc-catalog-title';
-      title.textContent = `${catalogRows.length} résultat${catalogRows.length > 1 ? 's' : ''} dans tout le catalogue Chamilo`;
+      title.textContent = local.size ? 'Autres cours du catalogue Chamilo' : 'Dans le catalogue Chamilo';
       const ul = document.createElement('ul');
       ul.className = 'bc-results';
       for (const r of catalogRows) {
@@ -277,7 +294,8 @@
     function clearCatalog() {
       searchSeq++;
       searchTerm = '';
-      catalogRows = [];
+      allCatalogRows = [];
+      inFlight = false;
       renderCatalog();
       setStatus('');
     }
@@ -287,6 +305,8 @@
       const seq = ++searchSeq;
       searchTerm = term;
       setStatus('Recherche dans le catalogue…');
+      inFlight = true;
+      updateSummary();
       searching = (async () => {
         let rows;
         try {
@@ -299,24 +319,25 @@
           const res = await fetch(url, init);
           rows = parseResults(new DOMParser().parseFromString(await res.text(), 'text/html'));
         } catch (err) {
-          if (seq === searchSeq) setStatus('Recherche dans le catalogue indisponible');
+          if (seq === searchSeq) { inFlight = false; setStatus('Recherche dans le catalogue indisponible'); renderCatalog(); }
           return;
         }
         if (seq !== searchSeq) return;
-        catalogRows = rows;
+        allCatalogRows = rows;
+        inFlight = false;
+        setStatus('');
         renderCatalog();
-        setStatus(rows.length ? '' : 'Aucun résultat dans le catalogue');
       })();
       return searching;
     }
 
     let searchTimer = 0;
     input.addEventListener('input', () => {
-      refresh();
       clearTimeout(searchTimer);
       const term = input.value.trim();
       if (term.length >= 2 && nativeForm) searchTimer = setTimeout(() => searchCatalog(term), 300);
       else clearCatalog();
+      refresh();
     });
     chip.addEventListener('click', () => {
       favoritesOnly = !favoritesOnly;
@@ -327,7 +348,7 @@
       if (e.isComposing) return;
       if (e.key === 'ArrowDown') { e.preventDefault(); setActive(activeIndex + 1); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(activeIndex - 1); }
-      else if (e.key === 'Escape') { input.value = ''; refresh(); clearTimeout(searchTimer); clearCatalog(); }
+      else if (e.key === 'Escape') { input.value = ''; clearTimeout(searchTimer); clearCatalog(); refresh(); }
       else if (e.key === 'Enter') {
         e.preventDefault();
         const visible = visibleUnits();
