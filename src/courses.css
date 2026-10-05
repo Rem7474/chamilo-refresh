@@ -127,3 +127,18 @@ html[data-bc-theme="light"] .bc-star[aria-pressed="true"] { color: #b45309; }
 }
 
 .bc-card.bc-closed { opacity: .72; }
+
+/* ---------- Résultats du catalogue complet (recherche native) ---------- */
+.bc-catalog[hidden] { display: none !important; }
+.bc-catalog {
+  margin: 0 15px 28px;
+  padding: 16px 20px;
+  background: var(--bc-surface);
+  border: 1px solid var(--bc-border);
+  border-radius: 16px;
+  color: var(--bc-text);
+  box-shadow: var(--bc-shadow);
+}
+.bc-catalog-title { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: var(--bc-muted); }
+.bc-catalog a { font-weight: 600; }
+.bc-hero-catalog .bc-chip, .bc-hero-catalog .bc-count { display: none; }

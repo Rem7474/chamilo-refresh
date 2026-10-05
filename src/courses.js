@@ -99,16 +99,18 @@
   function init(settings) {
     if (!settings.courseTools || document.querySelector('#formLogin')) return;
     const units = collectUnits();
-    if (!units.length) return;
+    const native = findNativeSearch();
+    if (!units.length && !native) return;
+    const catalogOnly = !units.length;
 
     let favorites = new Set(settings.favorites);
     let favoritesOnly = false;
     let activeIndex = -1;
 
-    const native = findNativeSearch();
     const nativeForm = native && native.form;
-    if (native) (native.closest('.panel, .well') || nativeForm || native).classList.add('bc-native-search');
-    for (const w of findNativeSelects(units)) {
+    const nativeBlock = native && (native.closest('.panel, .well') || nativeForm || native);
+    if (native) nativeBlock.classList.add('bc-native-search');
+    for (const w of units.length ? findNativeSelects(units) : []) {
       const wrapper = w.closest('.form-group, .panel, .well, form');
       const others = wrapper ? [...wrapper.querySelectorAll('input:not([type=hidden]), button, textarea, select')].filter((x) => !w.contains(x) && !x.closest(WIDGET)) : [1];
       (others.length ? w : wrapper).classList.add('bc-native-search');
@@ -117,19 +119,20 @@
     }
 
     const hero = document.createElement('div');
-    hero.className = 'bc-hero';
+    hero.className = catalogOnly ? 'bc-hero bc-hero-catalog' : 'bc-hero';
     hero.setAttribute('role', 'search');
     hero.innerHTML = `
       <div class="bc-hero-row">
         <span class="bc-hero-icon">${svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>')}</span>
         <input class="bc-hero-input" type="search" autocomplete="off" spellcheck="false"
-               placeholder="Rechercher un cours, un enseignant…" aria-label="Rechercher parmi mes cours">
+               placeholder="${catalogOnly ? 'Rechercher un cours dans Chamilo…' : 'Rechercher un cours, un enseignant…'}"
+               aria-label="Rechercher un cours">
         <kbd class="bc-hero-kbd" title="Appuyez sur / pour rechercher">/</kbd>
       </div>
       <div class="bc-hero-meta">
         <button type="button" class="bc-chip" aria-pressed="false">★ Favoris</button>
         <span class="bc-count" aria-live="polite"></span>
-        <span class="bc-hint">↑ ↓ pour naviguer · Entrée pour ouvrir · Échap pour effacer</span>
+        <span class="bc-hint">${catalogOnly ? 'Entrée pour ouvrir le premier résultat · Échap pour effacer' : '↑ ↓ pour naviguer · Entrée pour ouvrir · Échap pour effacer'}</span>
       </div>`;
     const input = hero.querySelector('.bc-hero-input');
     const chip = hero.querySelector('.bc-chip');
@@ -140,12 +143,18 @@
     empty.hidden = true;
 
     const container = document.querySelector('#content-section > .container') || document.querySelector('#content-section');
-    const lca = commonAncestor(units.map((u) => u.el));
+    const lca = units.length ? commonAncestor(units.map((u) => u.el)) : null;
     const crumbs = container && container.querySelector(':scope > .breadcrumb');
     if (crumbs) crumbs.after(hero);
     else if (container) container.prepend(hero);
-    else lca.before(hero);
-    lca.before(empty);
+    else if (lca) lca.before(hero);
+    else nativeBlock.before(hero);
+    if (lca) lca.before(empty);
+
+    const catalog = document.createElement('section');
+    catalog.className = 'bc-catalog';
+    catalog.hidden = true;
+    hero.after(catalog);
 
     for (const u of units) {
       u.el.classList.add('bc-card');
@@ -205,7 +214,7 @@
       sortFavoritesFirst();
       const shown = visibleUnits().length;
       count.textContent = shown === units.length ? `${units.length} cours` : `${shown} / ${units.length} cours`;
-      empty.hidden = shown > 0;
+      empty.hidden = shown > 0 || !units.length;
       empty.textContent = favoritesOnly && !terms.length
         ? 'Aucun favori pour le moment : cliquez sur ☆ à côté d’un cours.'
         : `Aucun de vos cours ne correspond à « ${input.value.trim()} ».${nativeForm ? ' Entrée lance la recherche Chamilo.' : ''}`;
@@ -219,7 +228,62 @@
       native.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
     }
 
-    input.addEventListener('input', () => { refresh(); mirrorToNative(); });
+    // Lance la recherche native (catalogue complet) sans quitter la page : la navigation du formulaire est bloquée.
+    function triggerNativeSearch() {
+      if (!native) return;
+      mirrorToNative();
+      if (!nativeForm) return;
+      const block = (e) => e.preventDefault();
+      nativeForm.addEventListener('submit', block, true);
+      const button = nativeForm.querySelector('button:not([type=button]), input[type=submit], input[type=image]');
+      if (button) button.click();
+      else nativeForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      nativeForm.removeEventListener('submit', block, true);
+    }
+
+    function nativeResults() {
+      const parts = [];
+      const walk = (node) => {
+        for (const child of node.children) {
+          if (child.matches('.panel-heading, script, style, input, button, select, textarea')) continue;
+          if (child.contains(native)) walk(child);
+          else parts.push(child);
+        }
+      };
+      walk(nativeBlock);
+      return parts.map((n) => {
+        const copy = n.cloneNode(true);
+        copy.querySelectorAll('input, button, select, textarea, script, style').forEach((x) => x.remove());
+        copy.querySelectorAll('[id]').forEach((x) => x.removeAttribute('id'));
+        copy.removeAttribute('id');
+        return copy;
+      }).filter((n) => n.textContent.trim() || n.querySelector('img, a'));
+    }
+
+    function renderCatalog() {
+      const parts = input.value.trim().length >= 2 && nativeBlock ? nativeResults() : [];
+      catalog.hidden = !parts.length;
+      if (!parts.length) { catalog.replaceChildren(); return; }
+      const title = document.createElement('h3');
+      title.className = 'bc-catalog-title';
+      title.textContent = 'Résultats dans tout le catalogue Chamilo';
+      catalog.replaceChildren(title, ...parts);
+    }
+
+    let searchTimer = 0;
+    if (nativeBlock) {
+      let frame = 0;
+      new MutationObserver(() => { cancelAnimationFrame(frame); frame = requestAnimationFrame(renderCatalog); })
+        .observe(nativeBlock, { childList: true, subtree: true, characterData: true });
+    }
+
+    input.addEventListener('input', () => {
+      refresh();
+      mirrorToNative();
+      clearTimeout(searchTimer);
+      if (input.value.trim().length >= 2) searchTimer = setTimeout(triggerNativeSearch, 350);
+      else renderCatalog();
+    });
     chip.addEventListener('click', () => {
       favoritesOnly = !favoritesOnly;
       chip.setAttribute('aria-pressed', String(favoritesOnly));
@@ -229,12 +293,20 @@
       if (e.isComposing) return;
       if (e.key === 'ArrowDown') { e.preventDefault(); setActive(activeIndex + 1); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(activeIndex - 1); }
-      else if (e.key === 'Escape') { input.value = ''; refresh(); mirrorToNative(); }
+      else if (e.key === 'Escape') { input.value = ''; refresh(); mirrorToNative(); renderCatalog(); }
       else if (e.key === 'Enter') {
         e.preventDefault();
         const visible = visibleUnits();
         if (visible.length) { const t = visible[Math.max(activeIndex, 0)]; if (!t.inaccessible) t.title.click(); }
-        else if (nativeForm && input.value.trim()) { mirrorToNative(); nativeForm.requestSubmit ? nativeForm.requestSubmit() : nativeForm.submit(); }
+        else if (catalog.querySelector('a[href]')) catalog.querySelector('a[href]').click();
+        else if (native && input.value.trim()) {
+          const term = input.value;
+          triggerNativeSearch();
+          setTimeout(() => {
+            if (input.value !== term || catalog.querySelector('a[href]') || !nativeForm) return;
+            nativeForm.requestSubmit ? nativeForm.requestSubmit() : nativeForm.submit();
+          }, 1500);
+        }
       }
     });
     document.addEventListener('keydown', (e) => {

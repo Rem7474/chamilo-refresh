@@ -1,5 +1,11 @@
 # Changelog
 
+## Non publié
+
+- Résultats de la recherche native (catalogue complet) affichés sous la barre, y compris les cours non inscrits.
+- Barre de recherche aussi sur la page d'accueil.
+- Sélecteurs natifs de recherche masqués ; cours sans lien d'accès listés et recherchables.
+
 ## 1.0.0
 
 - Thème sombre, clair ou automatique avec couleur d'accent, contrastes WCAG AA.

@@ -126,6 +126,19 @@ const auditContrast = () => {
   await page.keyboard.type('zzzz');
   check(await page.locator('.bc-empty').isVisible(), 'message "aucun résultat"');
 
+  // cours hors de mes cours : résultats du catalogue via la recherche native
+  await page.locator('.bc-hero-input').fill('');
+  await page.keyboard.type('IN513');
+  await page.waitForSelector('.bc-catalog a', { timeout: 5000 });
+  check(await page.locator('.bc-card:visible').count() === 0, 'catalogue : aucun de mes cours ne correspond à IN513');
+  check((await page.locator('.bc-catalog').textContent()).includes('inscription'), 'catalogue : cours non inscrit affiché sous la barre');
+  check(await page.locator('.bc-native-search:visible').count() === 0, 'catalogue : bloc natif toujours masqué');
+  await page.screenshot({ path: path.join(OUT, 'portal-catalog.png') });
+  await Promise.all([page.waitForURL('**/courses/IN513/**'), page.keyboard.press('Enter')]);
+  check(true, 'catalogue : Entrée ouvre le premier résultat');
+  await page.goBack({ waitUntil: 'load' });
+  await page.waitForSelector('.bc-hero');
+
   // favoris : persistance + tri
   await page.locator('.bc-hero-input').fill(''); await page.locator('.bc-hero-input').dispatchEvent('input');
   await page.locator('.bc-card').nth(2).locator('.bc-star').click();
@@ -146,6 +159,23 @@ const auditContrast = () => {
   const badLight = await page.evaluate(auditContrast);
   check(badLight.length === 0, '[maquette] contraste >= WCAG AA (clair, accent rouge)', badLight.slice(0, 6).join(' | '));
   await page.screenshot({ path: path.join(OUT, 'portal-light.png') });
+
+  // page d'accueil (index.php) : même barre, mode catalogue seul
+  const i0 = mock.lastIndexOf('<div class="col-md-9">');
+  const i1 = mock.lastIndexOf('</div></section>');
+  const home = mock.slice(0, i0) + '<div class="col-md-9"><h1>Outils et tutoriels</h1><p>Bienvenue sur la page d’accueil.</p></div>\n' + mock.slice(i1);
+  await ctx.route(`${ORIGIN}/index.php*`, (r) => r.fulfill({ contentType: 'text/html; charset=utf-8', body: home }));
+  await setSettings({ theme: 'dark' });
+  await page.goto(`${ORIGIN}/index.php`, { waitUntil: 'load' });
+  await page.waitForSelector('.bc-hero');
+  check(await page.locator('.bc-hero-catalog').count() === 1 && await page.locator('.bc-card').count() === 0, 'accueil : barre en mode catalogue, sans cartes');
+  check(await page.locator('.bc-native-search:visible').count() === 0, 'accueil : recherche native masquée');
+  await page.keyboard.type('IN513');
+  await page.waitForSelector('.bc-catalog a', { timeout: 5000 });
+  check(true, 'accueil : résultats du catalogue affichés');
+  await page.screenshot({ path: path.join(OUT, 'home-catalog.png') });
+  const badHome = await page.evaluate(auditContrast);
+  check(badHome.length === 0, '[accueil] contraste >= WCAG AA', badHome.slice(0, 6).join(' | '));
 
   // thème désactivé : plus aucun attribut
   await setSettings({ theme: 'off' });

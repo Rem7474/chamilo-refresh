@@ -3,6 +3,7 @@
 Extension Chrome / Edge (Manifest V3) pour https://chamilo.grenoble-inp.fr/.
 
 - **Recherche en tête de « Mes cours »** : grande barre qui filtre les cours en direct (titre, enseignants, sans tenir compte des accents). `/` la focalise, `↑ ↓` naviguent, `Entrée` ouvre le cours, `Échap` efface. Sans résultat, `Entrée` lance la recherche native de Chamilo.
+- **Catalogue complet** : la recherche déclenche aussi la recherche native de Chamilo et affiche ses résultats sous la barre (cours auxquels vous n'êtes pas inscrit, cours « inaccessibles »). Sur la page d'accueil (`index.php`), la même barre fonctionne en mode catalogue seul.
 - **Favoris** : étoile à côté de chaque cours, favoris remontés en tête, filtre « Favoris ». Synchronisés via le compte du navigateur.
 - **Thème sombre / clair / auto**, couleur d'accent au choix ; les contrastes sont calculés pour rester lisibles quelle que soit la couleur.
 - **Correction des textes illisibles** : les couleurs écrites en dur dans le contenu des cours (collées depuis Word, etc.) sont remplacées lorsqu'elles sont illisibles sur le nouveau fond.

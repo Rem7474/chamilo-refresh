@@ -36,6 +36,7 @@
         <input type="text" name="keyword" placeholder="Rechercher parmi les cours" class="form-control" style="width:80%;display:inline-block">
         <button type="submit" class="btn btn-default">OK</button>
       </form>
+      <div id="search-results"></div>
     </div></div>
     <div class="panel panel-default"><div class="panel-body text-center"><img alt="" width="150" height="150" style="border-radius:50%;background:#bde" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect width='150' height='150' fill='%23f66'/%3E%3C/svg%3E"></div></div>
     <div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Profil</h3></div>
@@ -79,5 +80,14 @@
   </div>
 </div></section>
 </div>
+<script>
+document.getElementById('native-search').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var q = e.target.keyword.value.trim().toLowerCase();
+  document.getElementById('search-results').innerHTML = q === 'in513'
+    ? '<p><b>1 Résultat(s)</b></p><p><a href="/courses/IN513/index.php">ESISAR IN513 - Infrastructures pour la sécurité</a> <span>L’inscription n’est pas autorisée</span></p>'
+    : '';
+});
+</script>
 </body>
 </html>
