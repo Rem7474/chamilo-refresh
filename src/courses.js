@@ -132,11 +132,13 @@
       <div class="bc-hero-meta">
         <button type="button" class="bc-chip" aria-pressed="false">★ Favoris</button>
         <span class="bc-count" aria-live="polite"></span>
+        <span class="bc-status" aria-live="polite"></span>
         <span class="bc-hint">${catalogOnly ? 'Entrée pour ouvrir le premier résultat · Échap pour effacer' : '↑ ↓ pour naviguer · Entrée pour ouvrir · Échap pour effacer'}</span>
       </div>`;
     const input = hero.querySelector('.bc-hero-input');
     const chip = hero.querySelector('.bc-chip');
     const count = hero.querySelector('.bc-count');
+    const status = hero.querySelector('.bc-status');
 
     const empty = document.createElement('p');
     empty.className = 'bc-empty';
@@ -228,18 +230,41 @@
       native.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
     }
 
+    // Premier contrôle cliquable après le champ natif (loupe) ; les liens réels (résultats) sont ignorés.
+    function nativeSubmitControl() {
+      const candidates = nativeBlock.querySelectorAll('button, input[type=submit], input[type=image], input[type=button], a, img, [role=button], [onclick]');
+      return [...candidates].find((el) => {
+        if (native.contains(el) || !(native.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)) return false;
+        const link = el.closest('a[href]');
+        return !link || /^(#|javascript:|$)/.test(link.getAttribute('href').trim());
+      });
+    }
+
     // Lance la recherche native (catalogue complet) sans quitter la page : la navigation du formulaire est bloquée.
     function triggerNativeSearch() {
       if (!native) return;
-      mirrorToNative();
-      if (!nativeForm) return;
       const block = (e) => e.preventDefault();
-      nativeForm.addEventListener('submit', block, true);
-      const button = nativeForm.querySelector('button:not([type=button]), input[type=submit], input[type=image]');
-      if (button) button.click();
-      else nativeForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-      nativeForm.removeEventListener('submit', block, true);
+      try {
+        mirrorToNative();
+        if (nativeForm) nativeForm.addEventListener('submit', block, true);
+        const control = nativeSubmitControl();
+        if (control) control.click();
+        else if (nativeForm) nativeForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      } catch (err) {
+        console.warn('Chamilo Refresh : recherche native indisponible', err);
+      } finally {
+        if (nativeForm) nativeForm.removeEventListener('submit', block, true);
+      }
+      setStatus('Recherche dans le catalogue…');
+      const term = input.value;
+      clearTimeout(statusTimer);
+      statusTimer = setTimeout(() => {
+        if (input.value === term && catalog.hidden) setStatus('Aucun résultat dans le catalogue · Entrée pour lancer la recherche Chamilo complète');
+      }, 2500);
     }
+
+    function setStatus(text) { status.textContent = text; }
+    let statusTimer = 0;
 
     function nativeResults() {
       const parts = [];
@@ -263,6 +288,7 @@
     function renderCatalog() {
       const parts = input.value.trim().length >= 2 && nativeBlock ? nativeResults() : [];
       catalog.hidden = !parts.length;
+      if (parts.length) setStatus('');
       if (!parts.length) { catalog.replaceChildren(); return; }
       const title = document.createElement('h3');
       title.className = 'bc-catalog-title';
@@ -282,7 +308,7 @@
       mirrorToNative();
       clearTimeout(searchTimer);
       if (input.value.trim().length >= 2) searchTimer = setTimeout(triggerNativeSearch, 350);
-      else renderCatalog();
+      else { renderCatalog(); setStatus(''); }
     });
     chip.addEventListener('click', () => {
       favoritesOnly = !favoritesOnly;
@@ -293,7 +319,7 @@
       if (e.isComposing) return;
       if (e.key === 'ArrowDown') { e.preventDefault(); setActive(activeIndex + 1); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(activeIndex - 1); }
-      else if (e.key === 'Escape') { input.value = ''; refresh(); mirrorToNative(); renderCatalog(); }
+      else if (e.key === 'Escape') { input.value = ''; refresh(); mirrorToNative(); renderCatalog(); setStatus(''); }
       else if (e.key === 'Enter') {
         e.preventDefault();
         const visible = visibleUnits();

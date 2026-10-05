@@ -173,6 +173,13 @@ const auditContrast = () => {
   await page.keyboard.type('IN513');
   await page.waitForSelector('.bc-catalog a', { timeout: 5000 });
   check(true, 'accueil : résultats du catalogue affichés');
+  await page.locator('.bc-hero-input').fill('');
+  await page.keyboard.type('zzzz');
+  await page.waitForFunction(() => /Aucun résultat dans le catalogue/.test(document.querySelector('.bc-status').textContent), null, { timeout: 6000 });
+  check(await page.locator('.bc-catalog:visible').count() === 0, 'accueil : message clair quand le catalogue ne renvoie rien');
+  await page.locator('.bc-hero-input').fill('');
+  await page.keyboard.type('IN513');
+  await page.waitForSelector('.bc-catalog a', { timeout: 5000 });
   await page.screenshot({ path: path.join(OUT, 'home-catalog.png') });
   const badHome = await page.evaluate(auditContrast);
   check(badHome.length === 0, '[accueil] contraste >= WCAG AA', badHome.slice(0, 6).join(' | '));

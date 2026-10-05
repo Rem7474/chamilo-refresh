@@ -142,3 +142,4 @@ html[data-bc-theme="light"] .bc-star[aria-pressed="true"] { color: #b45309; }
 .bc-catalog-title { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: var(--bc-muted); }
 .bc-catalog a { font-weight: 600; }
 .bc-hero-catalog .bc-chip, .bc-hero-catalog .bc-count { display: none; }
+.bc-status { font-style: italic; }
