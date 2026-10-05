@@ -1,0 +1,415 @@
+/* Anciennes icônes bitmap de Chamilo remplacées par des icônes vectorielles monochromes (masque CSS). */
+html[data-bc-theme] img[src*="/home."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/home_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/home1."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/home1_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/homepage."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/homepage_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_home."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_home_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder_document."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder_document_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/documents."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/documents_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/document."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/document_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder_up."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder_up_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder_new."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder_new_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder_document_na."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/folder_document_na_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/links."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/links_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/link."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/link_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/members."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/members_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/group."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/group_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/groupe."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/groupe_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/students."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/students_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/user."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/user_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/statusonline."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/statusonline_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/works."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/works_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/student_publication."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/student_publication_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/assignment."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/assignment_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_progress."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_progress_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/progress."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/progress_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/thematic."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/thematic_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_progress_na."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_progress_na_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/announcement."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/announcement_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/announcements."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/announcements_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/agenda."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/agenda_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/calendar."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/calendar_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/forum."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/forum_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/quiz."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/quiz_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/exercise."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/exercise_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/test."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/test_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/exercices."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/exercices_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/learnpath."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/learnpath_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/scorm."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/scorm_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/lp."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/lp_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_path."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_path_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/chat."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/chat_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/notebook."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/notebook_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/wiki."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/wiki_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/survey."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/survey_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/glossary."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/glossary_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/gradebook."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/gradebook_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/certificate."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/certificate_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_description."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/course_description_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/info."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/info_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/dropbox."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/dropbox_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/preview."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/preview_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/save."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/save_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/download."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/download_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/open_in_new_window."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/open_in_new_window_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/slideshow."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/slideshow_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/image_gallery."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/image_gallery_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/delete."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/delete_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/delete_na."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/delete_na_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/delete_scorm."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/delete_scorm_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/edit."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/edit_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/edit_na."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/edit_na_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/properties."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/properties_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/visible."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/visible_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/invisible."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/invisible_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/new_document."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/new_document_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/add."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/add_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/add_na."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/add_na_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/move."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/move_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/move_na."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/move_na_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_pdf."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_pdf_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_doc."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_doc_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_word."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_word_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_xls."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_xls_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_excel."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_excel_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_ppt."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_ppt_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_powerpoint."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_powerpoint_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_zip."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_zip_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_archive."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_archive_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_image."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_image_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_png."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_png_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_jpg."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_jpg_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_gif."]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_gif_"]:not([src*="/courses/"]):not([src*="/upload/"]),
+html[data-bc-theme] img[src*="/file_"]:not([src*="/courses/"]):not([src*="/upload/"]) {
+  content: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+  box-sizing: content-box;
+  width: 20px; height: 20px; padding: 0 !important;
+  background: var(--bc-icon-color, var(--bc-text)) !important;
+  -webkit-mask: var(--bc-icon-mask) center / contain no-repeat;
+  mask: var(--bc-icon-mask) center / contain no-repeat;
+  border: 0 !important; box-shadow: none !important; vertical-align: middle;
+  opacity: .9;
+}
+html[data-bc-theme] a:hover > img[src*="."] { opacity: 1; }
+html[data-bc-theme] img.tool-img { width: 26px; height: 26px; }
+html[data-bc-theme] img.tool-img, html[data-bc-theme] .btn img { --bc-icon-color: var(--bc-text); }
+html[data-bc-theme] img[src*="/file_"] { --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 3v5h5%22/%3E%3Cpath d=%22M9 13h6M9 17h6%22/%3E%3C/svg%3E"); }
+html[data-bc-theme] img[src*="/home."],
+html[data-bc-theme] img[src*="/home_"],
+html[data-bc-theme] img[src*="/home1."],
+html[data-bc-theme] img[src*="/home1_"],
+html[data-bc-theme] img[src*="/homepage."],
+html[data-bc-theme] img[src*="/homepage_"],
+html[data-bc-theme] img[src*="/course_home."],
+html[data-bc-theme] img[src*="/course_home_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m3 11 9-8 9 8%22/%3E%3Cpath d=%22M5 10v10h5v-6h4v6h5V10%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/folder_document."],
+html[data-bc-theme] img[src*="/folder_document_"],
+html[data-bc-theme] img[src*="/documents."],
+html[data-bc-theme] img[src*="/documents_"],
+html[data-bc-theme] img[src*="/document."],
+html[data-bc-theme] img[src*="/document_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/folder_up."],
+html[data-bc-theme] img[src*="/folder_up_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z%22/%3E%3Cpath d=%22m12 16v-5%22/%3E%3Cpath d=%22m9.5 13 2.5-2.5 2.5 2.5%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/folder."],
+html[data-bc-theme] img[src*="/folder_"],
+html[data-bc-theme] img[src*="/folder_new."],
+html[data-bc-theme] img[src*="/folder_new_"],
+html[data-bc-theme] img[src*="/folder_document_na."],
+html[data-bc-theme] img[src*="/folder_document_na_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/links."],
+html[data-bc-theme] img[src*="/links_"],
+html[data-bc-theme] img[src*="/link."],
+html[data-bc-theme] img[src*="/link_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1%22/%3E%3Cpath d=%22M14 10a4.5 4.5 0 0 0-6.4 0l-3 3A4.5 4.5 0 0 0 11 19.4l1-1%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/members."],
+html[data-bc-theme] img[src*="/members_"],
+html[data-bc-theme] img[src*="/group."],
+html[data-bc-theme] img[src*="/group_"],
+html[data-bc-theme] img[src*="/groupe."],
+html[data-bc-theme] img[src*="/groupe_"],
+html[data-bc-theme] img[src*="/students."],
+html[data-bc-theme] img[src*="/students_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%229%22 cy=%228%22 r=%223.5%22/%3E%3Cpath d=%22M2.5 20a6.5 6.5 0 0 1 13 0%22/%3E%3Cpath d=%22M16 4.5a3.5 3.5 0 0 1 0 7%22/%3E%3Cpath d=%22M18 14a6.5 6.5 0 0 1 3.5 6%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/user."],
+html[data-bc-theme] img[src*="/user_"],
+html[data-bc-theme] img[src*="/statusonline."],
+html[data-bc-theme] img[src*="/statusonline_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%228%22 r=%224%22/%3E%3Cpath d=%22M4 21a8 8 0 0 1 16 0%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/works."],
+html[data-bc-theme] img[src*="/works_"],
+html[data-bc-theme] img[src*="/student_publication."],
+html[data-bc-theme] img[src*="/student_publication_"],
+html[data-bc-theme] img[src*="/assignment."],
+html[data-bc-theme] img[src*="/assignment_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 20h4L19 9l-4-4L4 16z%22/%3E%3Cpath d=%22m13.5 6.5 4 4%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/course_progress."],
+html[data-bc-theme] img[src*="/course_progress_"],
+html[data-bc-theme] img[src*="/progress."],
+html[data-bc-theme] img[src*="/progress_"],
+html[data-bc-theme] img[src*="/thematic."],
+html[data-bc-theme] img[src*="/thematic_"],
+html[data-bc-theme] img[src*="/course_progress_na."],
+html[data-bc-theme] img[src*="/course_progress_na_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 20V10M10 20V4M16 20v-8M22 20H2%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/announcement."],
+html[data-bc-theme] img[src*="/announcement_"],
+html[data-bc-theme] img[src*="/announcements."],
+html[data-bc-theme] img[src*="/announcements_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 11v3a1 1 0 0 0 1 1h3l8 4V6L7 10H4a1 1 0 0 0-1 1z%22/%3E%3Cpath d=%22M18.5 9a4 4 0 0 1 0 6%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/agenda."],
+html[data-bc-theme] img[src*="/agenda_"],
+html[data-bc-theme] img[src*="/calendar."],
+html[data-bc-theme] img[src*="/calendar_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%223%22 y=%225%22 width=%2218%22 height=%2216%22 rx=%222%22/%3E%3Cpath d=%22M3 10h18M8 3v4M16 3v4%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/forum."],
+html[data-bc-theme] img[src*="/forum_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.6A8 8 0 1 1 21 12z%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/quiz."],
+html[data-bc-theme] img[src*="/quiz_"],
+html[data-bc-theme] img[src*="/exercise."],
+html[data-bc-theme] img[src*="/exercise_"],
+html[data-bc-theme] img[src*="/test."],
+html[data-bc-theme] img[src*="/test_"],
+html[data-bc-theme] img[src*="/exercices."],
+html[data-bc-theme] img[src*="/exercices_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%229%22/%3E%3Cpath d=%22M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7%22/%3E%3Cpath d=%22M12 17h.01%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/learnpath."],
+html[data-bc-theme] img[src*="/learnpath_"],
+html[data-bc-theme] img[src*="/scorm."],
+html[data-bc-theme] img[src*="/scorm_"],
+html[data-bc-theme] img[src*="/lp."],
+html[data-bc-theme] img[src*="/lp_"],
+html[data-bc-theme] img[src*="/course_path."],
+html[data-bc-theme] img[src*="/course_path_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M2 8.5 12 4l10 4.5L12 13z%22/%3E%3Cpath d=%22M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/chat."],
+html[data-bc-theme] img[src*="/chat_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-5 4V6a1 1 0 0 1 0-1z%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/notebook."],
+html[data-bc-theme] img[src*="/notebook_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6z%22/%3E%3Cpath d=%22M6 3v18M10 8h5M10 12h5%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/wiki."],
+html[data-bc-theme] img[src*="/wiki_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 5h7a3 3 0 0 1 2 1 3 3 0 0 1 2-1h7v14h-7a3 3 0 0 0-2 1 3 3 0 0 0-2-1H3z%22/%3E%3Cpath d=%22M12 6v14%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/survey."],
+html[data-bc-theme] img[src*="/survey_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%225%22 y=%223%22 width=%2214%22 height=%2218%22 rx=%222%22/%3E%3Cpath d=%22m9 9 1.5 1.5L13 8M9 15h6%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/glossary."],
+html[data-bc-theme] img[src*="/glossary_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z%22/%3E%3Cpath d=%22M5 17a3 3 0 0 1 3-3h11%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/gradebook."],
+html[data-bc-theme] img[src*="/gradebook_"],
+html[data-bc-theme] img[src*="/certificate."],
+html[data-bc-theme] img[src*="/certificate_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%229%22 r=%226%22/%3E%3Cpath d=%22m8.5 14-1.5 7 5-3 5 3-1.5-7%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/course_description."],
+html[data-bc-theme] img[src*="/course_description_"],
+html[data-bc-theme] img[src*="/info."],
+html[data-bc-theme] img[src*="/info_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%229%22/%3E%3Cpath d=%22M12 11v6M12 7.5h.01%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/dropbox."],
+html[data-bc-theme] img[src*="/dropbox_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 8h16v12H4z%22/%3E%3Cpath d=%22M4 8l2-4h12l2 4M10 13h4%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/preview."],
+html[data-bc-theme] img[src*="/preview_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z%22/%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%223%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/save."],
+html[data-bc-theme] img[src*="/save_"],
+html[data-bc-theme] img[src*="/download."],
+html[data-bc-theme] img[src*="/download_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 4v11%22/%3E%3Cpath d=%22m7 11 5 5 5-5%22/%3E%3Cpath d=%22M5 20h14%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/open_in_new_window."],
+html[data-bc-theme] img[src*="/open_in_new_window_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 4h6v6%22/%3E%3Cpath d=%22M20 4 10 14%22/%3E%3Cpath d=%22M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/slideshow."],
+html[data-bc-theme] img[src*="/slideshow_"],
+html[data-bc-theme] img[src*="/image_gallery."],
+html[data-bc-theme] img[src*="/image_gallery_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%223%22 y=%224%22 width=%2218%22 height=%2216%22 rx=%222%22/%3E%3Ccircle cx=%229%22 cy=%2210%22 r=%221.6%22/%3E%3Cpath d=%22m21 16-5-5-8 8%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/delete."],
+html[data-bc-theme] img[src*="/delete_"],
+html[data-bc-theme] img[src*="/delete_na."],
+html[data-bc-theme] img[src*="/delete_na_"],
+html[data-bc-theme] img[src*="/delete_scorm."],
+html[data-bc-theme] img[src*="/delete_scorm_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3%22/%3E%3C/svg%3E"); --bc-icon-color: #e5484d;
+}
+html[data-bc-theme] img[src*="/edit."],
+html[data-bc-theme] img[src*="/edit_"],
+html[data-bc-theme] img[src*="/edit_na."],
+html[data-bc-theme] img[src*="/edit_na_"],
+html[data-bc-theme] img[src*="/properties."],
+html[data-bc-theme] img[src*="/properties_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 20h4L19 9l-4-4L4 16z%22/%3E%3Cpath d=%22m13.5 6.5 4 4%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/visible."],
+html[data-bc-theme] img[src*="/visible_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z%22/%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%223%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/invisible."],
+html[data-bc-theme] img[src*="/invisible_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 3l18 18%22/%3E%3Cpath d=%22M10.6 5.1A9.7 9.7 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.2M6.6 6.6A16.8 16.8 0 0 0 2 12s3.5 7 10 7a9.6 9.6 0 0 0 4.2-1%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/new_document."],
+html[data-bc-theme] img[src*="/new_document_"],
+html[data-bc-theme] img[src*="/add."],
+html[data-bc-theme] img[src*="/add_"],
+html[data-bc-theme] img[src*="/add_na."],
+html[data-bc-theme] img[src*="/add_na_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 5v14M5 12h14%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/move."],
+html[data-bc-theme] img[src*="/move_"],
+html[data-bc-theme] img[src*="/move_na."],
+html[data-bc-theme] img[src*="/move_na_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4%22/%3E%3C/svg%3E");
+}
+html[data-bc-theme] img[src*="/file_pdf."],
+html[data-bc-theme] img[src*="/file_pdf_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 3v5h5%22/%3E%3Cpath d=%22M9 13h6M9 17h6%22/%3E%3C/svg%3E"); --bc-icon-color: #e5484d;
+}
+html[data-bc-theme] img[src*="/file_doc."],
+html[data-bc-theme] img[src*="/file_doc_"],
+html[data-bc-theme] img[src*="/file_word."],
+html[data-bc-theme] img[src*="/file_word_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 3v5h5%22/%3E%3Cpath d=%22M9 13h6M9 17h6%22/%3E%3C/svg%3E"); --bc-icon-color: #4c8dff;
+}
+html[data-bc-theme] img[src*="/file_xls."],
+html[data-bc-theme] img[src*="/file_xls_"],
+html[data-bc-theme] img[src*="/file_excel."],
+html[data-bc-theme] img[src*="/file_excel_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 3v5h5%22/%3E%3Cpath d=%22M9 13h6M9 17h6%22/%3E%3C/svg%3E"); --bc-icon-color: #2fb37a;
+}
+html[data-bc-theme] img[src*="/file_ppt."],
+html[data-bc-theme] img[src*="/file_ppt_"],
+html[data-bc-theme] img[src*="/file_powerpoint."],
+html[data-bc-theme] img[src*="/file_powerpoint_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 3v5h5%22/%3E%3Cpath d=%22M9 13h6M9 17h6%22/%3E%3C/svg%3E"); --bc-icon-color: #f08a3c;
+}
+html[data-bc-theme] img[src*="/file_zip."],
+html[data-bc-theme] img[src*="/file_zip_"],
+html[data-bc-theme] img[src*="/file_archive."],
+html[data-bc-theme] img[src*="/file_archive_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 3v5h5%22/%3E%3Cpath d=%22M9 13h6M9 17h6%22/%3E%3C/svg%3E"); --bc-icon-color: #e0a800;
+}
+html[data-bc-theme] img[src*="/file_image."],
+html[data-bc-theme] img[src*="/file_image_"],
+html[data-bc-theme] img[src*="/file_png."],
+html[data-bc-theme] img[src*="/file_png_"],
+html[data-bc-theme] img[src*="/file_jpg."],
+html[data-bc-theme] img[src*="/file_jpg_"],
+html[data-bc-theme] img[src*="/file_gif."],
+html[data-bc-theme] img[src*="/file_gif_"] {
+  --bc-icon-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%221.8%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 3v5h5%22/%3E%3Cpath d=%22M9 13h6M9 17h6%22/%3E%3C/svg%3E"); --bc-icon-color: #a77bff;
+}

@@ -95,6 +95,9 @@ const auditContrast = () => {
   // ---------- Maquette « Documents » : fonds blancs et texte gris clair du site ----------
   const docs = fs.readFileSync(path.join(__dirname, 'mock-documents.html'), 'utf8');
   await ctx.route(`${ORIGIN}/main/document/document.php*`, (r) => r.fulfill({ contentType: 'text/html; charset=utf-8', body: docs }));
+  const GIF = Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64');
+  await ctx.route(`${ORIGIN}/main/img/**`, (r) => r.fulfill({ contentType: 'image/gif', body: GIF }));
+  await ctx.route(`${ORIGIN}/courses/X/**`, (r) => r.fulfill({ contentType: 'image/gif', body: GIF }));
   const docPage = await ctx.newPage();
   await setSettings({ theme: 'dark' });
   await docPage.goto(`${ORIGIN}/main/document/document.php`, { waitUntil: 'load' });
@@ -104,6 +107,11 @@ const auditContrast = () => {
   check(lightBgs.length === 0, '[documents] plus de fond clair (barre d’outils, lignes, en-tête)', lightBgs.join(','));
   const badDocs = await docPage.evaluate(auditContrast);
   check(badDocs.length === 0, '[documents] contraste >= WCAG AA (sombre)', badDocs.slice(0, 6).join(' | '));
+  const iconStyle = (id) => docPage.locator(id).evaluate((e) => { const c = getComputedStyle(e); return [c.width, c.backgroundColor, c.webkitMaskImage.slice(0, 20)]; });
+  const pdf = await iconStyle('#ic-pdf');
+  check(pdf[0] === '20px' && /^url\("data:image\/svg/.test(pdf[2]) && pdf[1] === 'rgb(229, 72, 77)', '[documents] icône PDF remplacée par une icône vectorielle rouge', JSON.stringify(pdf));
+  check((await iconStyle('#ic-save'))[2].startsWith('url("data:image/svg'), '[documents] icône de téléchargement vectorielle');
+  check((await iconStyle('#ic-content'))[2] === 'none', '[documents] images du contenu des cours laissées intactes');
   await docPage.screenshot({ path: path.join(OUT, 'documents-dark.png') });
   await setSettings({ theme: 'light' });
   await docPage.reload({ waitUntil: 'load' });

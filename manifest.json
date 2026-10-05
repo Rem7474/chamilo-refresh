@@ -25,7 +25,8 @@
         "https://chamilo.grenoble-inp.fr/*"
       ],
       "css": [
-        "src/theme.css"
+        "src/theme.css",
+        "src/icons.css"
       ],
       "js": [
         "src/settings.js",
