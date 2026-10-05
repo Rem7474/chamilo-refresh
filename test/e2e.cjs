@@ -64,7 +64,8 @@ const auditContrast = () => {
     const body = r.request().postData() || '';
     searchPosts.push(body);
     const term = decodeURIComponent((/search_term=([^&]*)/.exec(body) || [])[1] || '').toLowerCase();
-    const list = term === 'in513'
+    const closed = '<div id="plugin_search_course_list" class="list"><h5>1 Résultat(s)</h5><div class="plugin_search_course"><table class="plugin_search_course"><tr><td><b>ESISAR IN511 - Intelligence Artificielle</b></td><td><img alt="L’inscription n’est pas autorisée" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></td></tr></table></div></div>';
+    const list = term === 'in511' ? closed : term === 'in513'
       ? '<div id="plugin_search_course_list" class="list"><h5>1 Résultat(s)</h5><div class="plugin_search_course"><table class="plugin_search_course"><tr><td><b><a href="/courses/IN513/index.php">ESISAR IN513 - Infrastructures pour la sécurité</a></b></td><td><img alt="L’inscription n’est pas autorisée" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></td></tr></table></div></div>'
       : '<div id="plugin_search_course_list" class="list"><h5>0 Résultat(s)</h5></div>';
     return r.fulfill({ contentType: 'text/html; charset=utf-8', body: `<html><body>${list}</body></html>` });
@@ -204,7 +205,14 @@ const auditContrast = () => {
   check(/0 \/ 4 de vos cours · 1 dans le catalogue/.test(await page.locator('.bc-count').textContent()), 'catalogue : compteur unique local + catalogue');
   const outline = await page.locator('.bc-hero-input').evaluate((el) => { el.focus(); const c = getComputedStyle(el); return [c.outlineStyle, c.borderTopWidth, c.boxShadow]; });
   check(outline[0] === 'none' && outline[1] === '0px' && outline[2] === 'none', 'barre : aucun contour carré au focus', JSON.stringify(outline));
-  check((await page.locator('.bc-catalog').textContent()).includes('inscription'), 'catalogue : cours non inscrit affiché sous la barre');
+  const openText = await page.locator('.bc-catalog').textContent();
+  check(/Accès libre/.test(openText) && !/pas autoris/.test(openText), 'catalogue : cours avec lien d’accès signalé accessible, pas « inscription non autorisée »');
+  check(await page.locator('.bc-catalog').evaluate((el) => el.previousElementSibling && el.previousElementSibling.classList.contains('bc-card') || !!el.closest('.bc-card') === false), 'catalogue : résultats placés dans la liste des cours');
+  await page.locator('.bc-hero-input').fill('IN511');
+  await page.waitForFunction(() => /Inscription fermée/.test(document.querySelector('.bc-catalog')?.textContent || ''), null, { timeout: 5000 });
+  check(await page.locator('.bc-catalog a').count() === 0, 'catalogue : cours sans lien d’accès signalé « Inscription fermée »');
+  await page.locator('.bc-hero-input').fill('IN513');
+  await page.waitForSelector('.bc-catalog a', { timeout: 5000 });
   check(await page.locator('.bc-native-search:visible').count() === 0, 'catalogue : bloc natif toujours masqué');
   check(searchPosts.some((b) => /search_course=1/.test(b) && /sec_token=tok123/.test(b) && /search_term=IN513/.test(b)), 'catalogue : requête identique au formulaire natif (POST, jeton inclus)');
   await page.screenshot({ path: path.join(OUT, 'portal-catalog.png') });

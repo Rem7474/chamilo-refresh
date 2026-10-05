@@ -161,7 +161,12 @@
     catalog.className = 'bc-catalog';
     catalog.hidden = true;
     hero.after(empty);
-    empty.after(catalog);
+    if (units.length) {
+      const last = units.map((u) => u.el).reduce((a, b) => (a.compareDocumentPosition(b) & 4 ? b : a));
+      last.after(catalog);
+    } else {
+      empty.after(catalog);
+    }
 
     for (const u of units) {
       u.el.classList.add('bc-card');
@@ -267,6 +272,9 @@
       }).filter((r) => r.title);
     }
 
+    // Chamilo affiche « L'inscription n'est pas autorisée » même pour un cours ouvert : la présence du lien d'accès fait foi.
+    const friendlyNote = (note, r) => (/pas autoris/i.test(note) ? (r.href ? 'Accès libre, sans inscription' : 'Inscription fermée') : note);
+
     function renderCatalog() {
       const local = localCodes();
       catalogRows = allCatalogRows.filter((r) => !rowCode(r) || !local.has(rowCode(r)));
@@ -275,7 +283,7 @@
       if (!catalogRows.length) { catalog.replaceChildren(); return; }
       const title = document.createElement('h3');
       title.className = 'bc-catalog-title';
-      title.textContent = local.size ? 'Autres cours du catalogue Chamilo' : 'Dans le catalogue Chamilo';
+      title.textContent = local.size ? 'Autres cours du catalogue' : 'Dans le catalogue Chamilo';
       const ul = document.createElement('ul');
       ul.className = 'bc-results';
       for (const r of catalogRows) {
@@ -285,7 +293,7 @@
         name.textContent = r.title;
         if (r.href) name.href = r.href;
         li.append(name);
-        for (const note of r.notes) {
+        for (const note of r.notes.map((n) => friendlyNote(n, r))) {
           const badge = document.createElement('span');
           badge.className = 'bc-badge-note';
           badge.textContent = note;
