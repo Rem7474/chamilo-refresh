@@ -3,6 +3,11 @@ name: Release
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag à (re)publier, ex. v1.1.1'
+        required: true
 
 permissions:
   contents: write
@@ -10,16 +15,20 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node scripts/build.cjs --tag "${GITHUB_REF_NAME}"
+      - run: node scripts/build.cjs --tag "${TAG}"
       - name: Publier
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1 || gh release create "${GITHUB_REF_NAME}" dist/*.zip --title "${GITHUB_REF_NAME}" --generate-notes
+        run: gh release view "${TAG}" >/dev/null 2>&1 || gh release create "${TAG}" dist/*.zip --title "${TAG}" --generate-notes
       - name: Chrome Web Store
         env:
           CWS_EXTENSION_ID: hlenfhclohhglipkoohfohpjaddddndk
