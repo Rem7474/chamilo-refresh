@@ -1,6 +1,6 @@
 # Changelog
 
-## Non publié
+## 1.1.1
 
 - Sélecteur de couleur : écritures espacées pendant le glissement (quota de `chrome.storage.sync`), valeur finale enregistrée au relâchement.
 
