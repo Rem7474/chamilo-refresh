@@ -15,8 +15,32 @@ function paintAccent(accent) {
 }
 
 function save(partial, needsReload = false) {
-  chrome.storage.sync.set(partial);
+  chrome.storage.sync.set(partial, () => void chrome.runtime.lastError);
   if (needsReload) $('note').hidden = false;
+}
+
+// chrome.storage.sync limite les écritures (~120/min) : pendant le glissement du sélecteur on espace les écritures,
+// et la valeur finale est toujours écrite au relâchement.
+const ACCENT_WRITE_INTERVAL = 700;
+let accentTimer = 0;
+let accentLastWrite = 0;
+let accentPending = null;
+
+function flushAccent() {
+  clearTimeout(accentTimer);
+  accentTimer = 0;
+  if (accentPending === null) return;
+  const accent = accentPending;
+  accentPending = null;
+  accentLastWrite = Date.now();
+  save({ accent });
+}
+
+function saveAccent(accent, final = false) {
+  accentPending = accent;
+  const wait = accentLastWrite + ACCENT_WRITE_INTERVAL - Date.now();
+  if (final || wait <= 0) flushAccent();
+  else if (!accentTimer) accentTimer = setTimeout(flushAccent, wait);
 }
 
 chrome.storage.sync.get(BC_DEFAULTS, (s) => {
@@ -30,13 +54,15 @@ chrome.storage.sync.get(BC_DEFAULTS, (s) => {
     b.dataset.color = color;
     b.style.background = color;
     b.title = b.ariaLabel = color;
-    b.addEventListener('click', () => { paintAccent(color); save({ accent: color }); });
+    b.addEventListener('click', () => { paintAccent(color); saveAccent(color, true); });
     $('swatches').append(b);
   }
   paintAccent(s.accent);
 
   $('theme').addEventListener('change', (e) => save({ theme: e.target.value }));
-  $('accent').addEventListener('input', (e) => { paintAccent(e.target.value); save({ accent: e.target.value }); });
+  $('accent').addEventListener('input', (e) => { paintAccent(e.target.value); saveAccent(e.target.value); });
+  $('accent').addEventListener('change', (e) => saveAccent(e.target.value, true));
+  window.addEventListener('pagehide', flushAccent);
   $('fixContrast').addEventListener('change', (e) => save({ fixContrast: e.target.checked }));
   $('courseTools').addEventListener('change', (e) => save({ courseTools: e.target.checked }, true));
 });

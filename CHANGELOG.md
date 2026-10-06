@@ -1,5 +1,9 @@
 # Changelog
 
+## Non publié
+
+- Sélecteur de couleur : écritures espacées pendant le glissement (quota de `chrome.storage.sync`), valeur finale enregistrée au relâchement.
+
 ## 1.1.0
 
 - Icônes vectorielles pour le fil d'Ariane (maison), la messagerie, le profil, l'organisation des cours, l'enseignant, la vignette de cours et la barre d'outils de l'agenda ; calendrier (FullCalendar) adapté au thème, texte des évènements colorés rendu lisible (blanc ou noir selon le fond).

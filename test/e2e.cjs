@@ -234,6 +234,31 @@ const auditContrast = () => {
   check(await page.locator('.bc-card:visible').count() === 1, 'filtre "Favoris" -> 1 cours');
   await page.screenshot({ path: path.join(OUT, 'portal-fav.png') });
 
+  // sélecteur de couleur : un glissement ne doit pas saturer le quota d'écriture de storage.sync
+  {
+    const popup = await ctx.newPage();
+    await popup.goto(`chrome-extension://${extId}/popup/popup.html`);
+    await popup.waitForSelector('#swatches button');
+    const drag = await popup.evaluate(async () => {
+      let writes = 0;
+      const set = chrome.storage.sync.set.bind(chrome.storage.sync);
+      chrome.storage.sync.set = (...a) => { writes++; return set(...a); };
+      const el = document.getElementById('accent');
+      for (let i = 0; i < 400; i++) {
+        el.value = '#' + (0x100000 + i * 997).toString(16).padStart(6, '0').slice(-6);
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      const last = el.value;
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      await new Promise((r) => setTimeout(r, 300));
+      const stored = await new Promise((r) => chrome.storage.sync.get('accent', r));
+      return { writes, last, stored: stored.accent };
+    });
+    check(drag.writes <= 3, '[popup] glissement du sélecteur : écritures espacées', JSON.stringify(drag));
+    check(drag.stored === drag.last, '[popup] couleur finale enregistrée au relâchement', JSON.stringify(drag));
+    await popup.close();
+  }
+
   // thème clair + accent personnalisé
   await setSettings({ theme: 'light', accent: '#e11d48', favorites: ['ESISARPX505:0'] });
   await page.reload({ waitUntil: 'load' });
