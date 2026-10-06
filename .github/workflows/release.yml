@@ -24,18 +24,25 @@ jobs:
         env:
           CWS_EXTENSION_ID: hlenfhclohhglipkoohfohpjaddddndk
           CWS_PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
-          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
-          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
-          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          CWS_SERVICE_ACCOUNT_KEY: ${{ secrets.CWS_SERVICE_ACCOUNT_KEY }}
         run: |
-          if [ -z "$CWS_REFRESH_TOKEN" ] || [ -z "$CWS_PUBLISHER_ID" ]; then
+          if [ -z "$CWS_SERVICE_ACCOUNT_KEY" ] || [ -z "$CWS_PUBLISHER_ID" ]; then
             echo "Secrets Chrome Web Store absents : étape ignorée."
             exit 0
           fi
-          ZIP=$(ls dist/*.zip)
+          b64url() { openssl base64 -A | tr '+/' '-_' | tr -d '='; }
+          KEYFILE=$(mktemp)
+          trap 'rm -f "$KEYFILE"' EXIT
+          echo "$CWS_SERVICE_ACCOUNT_KEY" | jq -r .private_key > "$KEYFILE"
+          NOW=$(date +%s)
+          HEADER=$(printf '{"alg":"RS256","typ":"JWT"}' | b64url)
+          CLAIMS=$(echo "$CWS_SERVICE_ACCOUNT_KEY" | jq -c --argjson iat "$NOW" \
+            '{iss: .client_email, scope: "https://www.googleapis.com/auth/chromewebstore", aud: "https://oauth2.googleapis.com/token", iat: $iat, exp: ($iat + 3600)}' | b64url)
+          SIGNATURE=$(printf '%s.%s' "$HEADER" "$CLAIMS" | openssl dgst -sha256 -sign "$KEYFILE" | b64url)
           TOKEN=$(curl -sS --fail-with-body https://oauth2.googleapis.com/token \
-            -d client_id="$CWS_CLIENT_ID" -d client_secret="$CWS_CLIENT_SECRET" \
-            -d refresh_token="$CWS_REFRESH_TOKEN" -d grant_type=refresh_token | jq -r .access_token)
+            -d grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer \
+            -d assertion="$HEADER.$CLAIMS.$SIGNATURE" | jq -r .access_token)
+          ZIP=$(ls dist/*.zip)
           BASE="https://chromewebstore.googleapis.com"
           ITEM="publishers/$CWS_PUBLISHER_ID/items/$CWS_EXTENSION_ID"
           UPLOAD=$(curl -sS --fail-with-body -X POST -H "Authorization: Bearer $TOKEN" -T "$ZIP" "$BASE/upload/v2/$ITEM:upload")
