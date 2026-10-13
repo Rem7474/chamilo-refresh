@@ -265,11 +265,74 @@
         if (!/^https?:/.test(href)) href = '';
         const cells = [...tr.cells];
         const title = (link || cells[0] || tr).textContent.trim();
-        const notes = [...tr.querySelectorAll('img')].map((i) => i.alt || i.title)
-          .concat(cells.slice(1).map((c) => c.textContent.trim()))
+        const subscribe = parseSubscribe(tr.querySelector('form'));
+        const notes = [...tr.querySelectorAll('img')].filter((i) => !i.closest('form'))
+          .map((i) => i.alt || i.title)
+          .concat(cells.slice(1).filter((c) => !c.querySelector('form')).map((c) => c.textContent.trim()))
           .filter(Boolean);
-        return { title, href, notes: [...new Set(notes)] };
+        return { title, href, notes: [...new Set(notes)], subscribe };
       }).filter((r) => r.title);
+    }
+
+    // Formulaire d'inscription natif d'une ligne de résultat : on en garde l'action, les champs cachés et le
+    // libellé/icône du bouton, pour le reconstruire dans la carte (le HTML natif n'est jamais injecté tel quel).
+    function parseSubscribe(form) {
+      if (!form) return null;
+      const submit = form.querySelector('input[type="image"], input[type="submit"], button');
+      if (!submit) return null;
+      let action;
+      try { action = new URL(form.getAttribute('action') || location.href, location.href); } catch { return null; }
+      if (action.origin !== location.origin) return null;
+      const fields = [...form.querySelectorAll('input[type="hidden"][name]')].map((i) => [i.name, i.value]);
+      let icon = '';
+      try { icon = submit.src ? new URL(submit.getAttribute('src'), location.href).href : ''; } catch { /* bad src */ }
+      if (!/^https?:/.test(icon)) icon = '';
+      return {
+        action: action.href,
+        method: (form.method || 'post').toLowerCase() === 'get' ? 'get' : 'post',
+        fields,
+        submitName: submit.name || '',
+        submitIsImage: submit.type === 'image',
+        label: (submit.title || submit.alt || submit.value || '').trim() || 'S’inscrire',
+        icon,
+      };
+    }
+
+    function subscribeForm(r) {
+      const s = r.subscribe;
+      const form = document.createElement('form');
+      form.className = 'bc-subscribe';
+      form.action = s.action;
+      form.method = s.method;
+      const add = (name, value) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        form.append(input);
+      };
+      for (const [name, value] of s.fields) add(name, value);
+      // Un <input type="image"> envoie son nom accompagné des coordonnées du clic : on reproduit la même requête.
+      if (s.submitName) {
+        add(s.submitName, '');
+        if (s.submitIsImage) { add(`${s.submitName}.x`, '0'); add(`${s.submitName}.y`, '0'); }
+      }
+      const button = document.createElement('button');
+      button.type = 'submit';
+      button.className = 'bc-subscribe-btn';
+      button.title = `${s.label} : ${r.title}`;
+      if (s.icon) {
+        const img = document.createElement('img');
+        img.src = s.icon;
+        img.alt = '';
+        button.append(img);
+      }
+      button.append(document.createTextNode(s.label));
+      form.append(button);
+      form.addEventListener('submit', (e) => {
+        if (!confirm(`Êtes-vous sûr de vouloir vous inscrire à ce cours ?\n\n${r.title}`)) e.preventDefault();
+      });
+      return form;
     }
 
     // Chamilo affiche « L'inscription n'est pas autorisée » même pour un cours ouvert : la présence du lien d'accès fait foi.
@@ -299,6 +362,7 @@
           badge.textContent = note;
           li.append(badge);
         }
+        if (r.subscribe) li.append(subscribeForm(r));
         ul.append(li);
       }
       catalog.replaceChildren(title, ul);

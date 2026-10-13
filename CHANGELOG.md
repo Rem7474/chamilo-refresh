@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Recherche : le bouton « S’inscrire » des cours du catalogue est affiché dans la carte du résultat (formulaire natif reconstruit, confirmation conservée) au lieu de disparaître.
+
 ## 1.1.1
 
 - Sélecteur de couleur : écritures espacées pendant le glissement (quota de `chrome.storage.sync`), valeur finale enregistrée au relâchement.

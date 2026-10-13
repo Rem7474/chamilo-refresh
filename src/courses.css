@@ -158,3 +158,15 @@ a.bc-result-title::after { content: ""; position: absolute; inset: 0; }
 }
 .bc-hero-catalog .bc-chip, .bc-hero-catalog .bc-count { display: none; }
 .bc-status { font-style: italic; }
+
+/* Bouton d'inscription natif reconstruit dans la carte (au-dessus du lien étiré de la carte). */
+.bc-subscribe { position: relative; z-index: 1; margin: 0 0 0 auto; }
+.bc-subscribe-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid var(--bc-accent, #7c8cff); border-radius: 999px;
+  background: var(--bc-accent, #7c8cff); color: var(--bc-on-accent, #fff);
+  font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.bc-subscribe-btn:hover { filter: brightness(1.1); }
+.bc-subscribe-btn img { width: 20px; height: 20px; }

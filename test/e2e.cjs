@@ -65,7 +65,8 @@ const auditContrast = () => {
     searchPosts.push(body);
     const term = decodeURIComponent((/search_term=([^&]*)/.exec(body) || [])[1] || '').toLowerCase();
     const closed = '<div id="plugin_search_course_list" class="list"><h5>1 Résultat(s)</h5><div class="plugin_search_course"><table class="plugin_search_course"><tr><td><b>ESISAR IN511 - Intelligence Artificielle</b></td><td><img alt="L’inscription n’est pas autorisée" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></td></tr></table></div></div>';
-    const list = term === 'in511' ? closed : term === 'in513'
+    const subscribable = '<div id="plugin_search_course_list" class="list"><h5>1 Résultat(s)</h5><div class="plugin_search_course"><table class="plugin_search_course"><tr><td><b>ESISAR IN514 - Réseaux</b></td><td><form action="/user_portal.php?action=subscribe" method="post"><input type="hidden" name="sec_token" value="tok999"><input type="hidden" name="subscribe_course" value="IN514"><input onclick="return confirm(\'x\')" style="margin-left:10px;width:32px;" type="image" name="unsub" title="S\'inscrire" src="/main/img/icons/48/user_subscribe_course.png" alt="S\'inscrire"></form></td></tr></table></div></div>';
+    const list = term === 'in514' ? subscribable : term === 'in511' ? closed : term === 'in513'
       ? '<div id="plugin_search_course_list" class="list"><h5>1 Résultat(s)</h5><div class="plugin_search_course"><table class="plugin_search_course"><tr><td><b><a href="/courses/IN513/index.php">ESISAR IN513 - Infrastructures pour la sécurité</a></b></td><td><img alt="L’inscription n’est pas autorisée" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></td></tr></table></div></div>'
       : '<div id="plugin_search_course_list" class="list"><h5>0 Résultat(s)</h5></div>';
     return r.fulfill({ contentType: 'text/html; charset=utf-8', body: `<html><body>${list}</body></html>` });
@@ -212,6 +213,12 @@ const auditContrast = () => {
   await page.locator('.bc-hero-input').fill('IN511');
   await page.waitForFunction(() => /Inscription fermée/.test(document.querySelector('.bc-catalog')?.textContent || ''), null, { timeout: 5000 });
   check(await page.locator('.bc-catalog a').count() === 0, 'catalogue : cours sans lien d’accès signalé « Inscription fermée »');
+  await page.locator('.bc-hero-input').fill('IN514');
+  await page.waitForSelector('.bc-subscribe-btn', { timeout: 5000 });
+  check(await page.locator('.bc-catalog .bc-subscribe-btn:visible').count() === 1, 'catalogue : bouton « S’inscrire » présent pour un cours inscriptible');
+  check(!/S’inscrire\s*S’inscrire|S'inscrire\s*S'inscrire/.test(await page.locator('.bc-catalog').textContent()), 'catalogue : bouton d’inscription non dupliqué en badge');
+  const subForm = await page.locator('.bc-subscribe').evaluate((f) => [f.method, new URL(f.action).pathname, Object.fromEntries(new FormData(f))]);
+  check(subForm[0] === 'post' && subForm[1] === '/user_portal.php' && subForm[2].subscribe_course === 'IN514' && subForm[2].sec_token === 'tok999' && 'unsub.x' in subForm[2], 'catalogue : formulaire d’inscription reconstruit (action, champs, coordonnées)', JSON.stringify(subForm));
   await page.locator('.bc-hero-input').fill('IN513');
   await page.waitForSelector('.bc-catalog a', { timeout: 5000 });
   check(await page.locator('.bc-native-search:visible').count() === 0, 'catalogue : bloc natif toujours masqué');
