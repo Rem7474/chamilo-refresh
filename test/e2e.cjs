@@ -310,6 +310,47 @@ const auditContrast = () => {
   }
   const hit = await page.evaluate(() => { const b = document.querySelector('.course-tool').getBoundingClientRect(); const e = document.elementFromPoint(b.right - 10, b.bottom - 10); return e && e.id; });
   check(hit === 'istooldesc_3', '[accueil cours] un clic n’importe où sur la carte ouvre l’outil', String(hit));
+  {
+    // Zone cliquable : chaque point de chaque carte, survol réel inclus (le décalage au survol ne doit pas faire sortir le curseur).
+    const cardCount = await page.locator('.course-tool').count();
+    const misses = [];
+    for (let i = 0; i < cardCount; i++) {
+      const b = await page.locator('.course-tool').nth(i).boundingBox();
+      const href = await page.locator('.course-tool').nth(i).locator('a').first().getAttribute('href');
+      for (const [fx, fy] of [[0.02, 0.02], [0.5, 0.02], [0.98, 0.02], [0.02, 0.5], [0.5, 0.5], [0.98, 0.5], [0.02, 0.98], [0.5, 0.98], [0.98, 0.98]]) {
+        await page.mouse.move(b.x - 30, b.y - 30);
+        await page.mouse.move(b.x + b.width * fx, b.y + b.height * fy, { steps: 3 });
+        await page.waitForTimeout(220);
+        const got = await page.evaluate(([x, y]) => {
+          const e = document.elementFromPoint(x, y);
+          const a = e && e.closest('a');
+          return a ? a.getAttribute('href') : null;
+        }, [b.x + b.width * fx, b.y + b.height * fy]);
+        if (got !== href) misses.push(`${i}:${fx},${fy}`);
+      }
+    }
+    check(misses.length === 0, '[accueil cours] toute la surface de chaque carte est cliquable (survol compris)', misses.length + ' manqués ; ' + [...new Set(misses.map((m) => m.split(':')[0]))].join(',') + ' ; ' + misses.slice(0, 3).join(' '));
+  }
+  {
+    const ring = () => page.evaluate(() => {
+      const card = document.querySelector('.course-tool:has(:focus)');
+      if (!card) return null;
+      const link = card.querySelector('a:focus');
+      return [getComputedStyle(card).outlineStyle, getComputedStyle(card).outlineWidth, link ? getComputedStyle(link).outlineStyle : 'none'];
+    });
+    const box = await page.locator('.course-tool').first().boundingBox();
+    await page.mouse.move(box.x + 20, box.y + 20);
+    await page.mouse.down();
+    await page.mouse.move(box.x - 40, box.y - 40);
+    await page.mouse.up();
+    const afterMouse = await ring();
+    check(!afterMouse || afterMouse[0] === 'none', '[accueil cours] clic souris : pas de contour de focus sur la carte', JSON.stringify(afterMouse));
+    await page.evaluate(() => document.activeElement && document.activeElement.blur());
+    await page.mouse.click(2, 2).catch(() => {});
+    for (let i = 0; i < 60 && !(await page.evaluate(() => !!document.querySelector('.course-tool:has(:focus-visible)'))); i++) await page.keyboard.press('Tab');
+    const kb = await ring();
+    check(kb && kb[0] === 'solid' && kb[1] === '2px' && kb[2] === 'none', '[accueil cours] clavier : un seul anneau de focus, porté par la carte', JSON.stringify(kb));
+  }
 
   // ---------- « Mes cours » : icônes de la colonne latérale, vignette et enseignants ; Agenda ----------
   const agenda = fs.readFileSync(path.join(__dirname, 'mock-agenda.html'), 'utf8');
@@ -366,12 +407,58 @@ const auditContrast = () => {
   await page.keyboard.type('IN513');
   await page.waitForSelector('.bc-catalog a', { timeout: 5000 });
   await page.screenshot({ path: path.join(OUT, 'home-catalog.png') });
+  {
+    // Curseur : toute la carte de résultat doit rester un lien (pointer) pendant le survol, sans clignoter.
+    const b = await page.locator('.bc-results li').first().boundingBox();
+    const bad = [];
+    for (const [fx, fy] of [[0.02, 0.1], [0.5, 0.1], [0.98, 0.1], [0.02, 0.5], [0.5, 0.5], [0.98, 0.5], [0.02, 0.9], [0.5, 0.9], [0.98, 0.9], [0.5, 0.96]]) {
+      await page.mouse.move(b.x - 30, b.y - 30);
+      await page.mouse.move(b.x + b.width * fx, b.y + b.height * fy, { steps: 3 });
+      for (let k = 0; k < 3; k++) {
+        await page.waitForTimeout(120);
+        const cur = await page.evaluate(([x, y]) => { const e = document.elementFromPoint(x, y); return e ? getComputedStyle(e).cursor : 'none'; }, [b.x + b.width * fx, b.y + b.height * fy]);
+        if (cur !== 'pointer') bad.push(`${fx},${fy}=${cur}`);
+      }
+    }
+    check(bad.length === 0, '[accueil] résultat du catalogue : curseur « main » stable sur toute la carte', bad.slice(0, 6).join(' '));
+  }
   const badHome = await page.evaluate(auditContrast);
   check(badHome.length === 0, '[accueil] contraste >= WCAG AA', badHome.slice(0, 6).join(' | '));
 
+  // ---------- Envoi de travaux : zone de dépôt lisible, liste des fichiers en lignes ----------
+  const workMock = fs.readFileSync(path.join(__dirname, 'mock-work.html'), 'utf8');
+  await ctx.route(`${ORIGIN}/main/work/work.php*`, (r) => r.fulfill({ contentType: 'text/html; charset=utf-8', body: workMock }));
+  for (const theme of ['dark', 'light']) {
+    await setSettings({ theme });
+    await page.goto(`${ORIGIN}/main/work/work.php`, { waitUntil: 'load' });
+    await page.waitForTimeout(400);
+    const w = await page.evaluate(() => {
+      const ratio = (a, b) => { const p = (v) => v.match(/[\d.]+/g).slice(0, 3).map(Number); const l = ([r, g, bl]) => [r, g, bl].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }).reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0); const [h, lo] = [l(p(a)), l(p(b))].sort((x, y) => y - x); return (h + 0.05) / (lo + 0.05); };
+      const dz = document.querySelector('#dropzone');
+      const txt = document.querySelector('#dropzone .button-load');
+      const row = document.querySelector('#files > a > .row');
+      const cols = [...row.children].map((c) => c.getBoundingClientRect());
+      const before = getComputedStyle(txt, '::before');
+      return {
+        textContrast: ratio(getComputedStyle(txt).color, getComputedStyle(dz).backgroundColor),
+        bitmap: getComputedStyle(txt).backgroundImage,
+        arrow: before.content !== 'none' && before.width === '44px',
+        rowH: row.getBoundingClientRect().height,
+        sameLine: cols.every((c) => Math.abs((c.top + c.height / 2) - (cols[0].top + cols[0].height / 2)) < 14),
+        statusRight: cols[2].right <= row.getBoundingClientRect().right + 1 && cols[1].right <= cols[2].left + 1,
+      };
+    });
+    check(w.textContrast >= 4.5, `[travaux] texte de la zone de dépôt lisible (${theme})`, w.textContrast.toFixed(2));
+    check(w.bitmap === 'none' && w.arrow, `[travaux] illustration bitmap remplacée par une icône au thème (${theme})`, w.bitmap);
+    check(w.rowH < 80 && w.sameLine && w.statusRight, `[travaux] fichier envoyé sur une seule ligne compacte (${theme})`, JSON.stringify(w));
+    const badWork = await page.evaluate(auditContrast);
+    check(badWork.length === 0, `[travaux] contraste >= WCAG AA (${theme})`, badWork.slice(0, 4).join(' | '));
+    await page.screenshot({ path: path.join(OUT, `work-${theme}.png`) });
+  }
+
   // ---------- Passe responsive : pas de défilement horizontal à 390 px, thèmes sombre et clair ----------
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const [name, url] of [['portal', '/user_portal.php'], ['documents', '/main/document/document.php'], ['course-home', '/courses/ESISAR5AMMB501/index.php?id_session=0'], ['index', '/index.php']]) {
+  for (const [name, url] of [['portal', '/user_portal.php'], ['documents', '/main/document/document.php'], ['course-home', '/courses/ESISAR5AMMB501/index.php?id_session=0'], ['work', '/main/work/work.php'], ['index', '/index.php']]) {
     for (const theme of ['dark', 'light']) {
       await setSettings({ theme });
       await page.goto(`${ORIGIN}${url}`, { waitUntil: 'load' });

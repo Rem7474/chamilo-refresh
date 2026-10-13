@@ -26,7 +26,8 @@
       ],
       "css": [
         "src/theme.css",
-        "src/icons.css"
+        "src/icons.css",
+        "src/uploads.css"
       ],
       "js": [
         "src/settings.js",

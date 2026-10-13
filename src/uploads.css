@@ -1,0 +1,70 @@
+/* Envoi de fichiers (travaux) : zone de dépôt et liste des fichiers envoyés. */
+html[data-bc-theme] #dropzone {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 150px; margin: 0 0 20px; padding: 24px;
+  background: var(--bc-surface) !important;
+  border: 2px dashed var(--bc-border) !important;
+  border-radius: var(--bc-radius, 12px);
+  transition: border-color .15s, background-color .15s;
+}
+html[data-bc-theme] #dropzone:hover,
+html[data-bc-theme] #dropzone.hover,
+html[data-bc-theme] #dropzone.fade.in {
+  border-color: var(--bc-accent) !important;
+  background: color-mix(in srgb, var(--bc-accent) 10%, var(--bc-surface)) !important;
+}
+/* L'illustration bitmap d'origine est remplacée par une flèche d'envoi au thème. */
+html[data-bc-theme] #dropzone .button-load {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  width: auto; height: auto; padding: 0; margin: 0;
+  background: none !important; border: 0 !important;
+  color: var(--bc-text) !important;
+  font-size: 17px; font-weight: 600; line-height: 1.4; text-align: center;
+}
+html[data-bc-theme] #dropzone .button-load::before {
+  content: ''; width: 44px; height: 44px;
+  background: var(--bc-accent);
+  -webkit-mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 16V4m0 0-4.5 4.5M12 4l4.5 4.5'/%3E%3Cpath d='M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3'/%3E%3C/svg%3E");
+  mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 16V4m0 0-4.5 4.5M12 4l4.5 4.5'/%3E%3Cpath d='M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3'/%3E%3C/svg%3E");
+}
+html[data-bc-theme] #dropzone .button-load img { display: none; }
+
+html[data-bc-theme] .progress {
+  height: 8px; margin: 0 0 20px;
+  background: var(--bc-surface-2); border-radius: 999px; box-shadow: none; overflow: hidden;
+}
+html[data-bc-theme] .progress .progress-bar { height: 100%; border-radius: 999px; box-shadow: none; }
+
+/* Fichiers envoyés : une ligne par fichier (icône, nom, état), au lieu des colonnes Bootstrap éparpillées. */
+html[data-bc-theme] #files.files { display: grid; gap: 10px; }
+html[data-bc-theme] #files.files > a {
+  display: block; text-decoration: none;
+  background: var(--bc-surface); border: 1px solid var(--bc-border); border-radius: var(--bc-radius, 12px);
+  box-shadow: var(--bc-shadow);
+  transition: border-color .12s;
+}
+html[data-bc-theme] #files.files > a:hover { border-color: var(--bc-accent); filter: none; text-decoration: none; }
+html[data-bc-theme] #files.files > a > .row {
+  display: flex; align-items: center; gap: 14px;
+  margin: 0 !important; padding: 12px 16px;
+}
+html[data-bc-theme] #files.files > a > .row::before,
+html[data-bc-theme] #files.files > a > .row::after { display: none; }
+html[data-bc-theme] #files.files > a > .row > [class*="col-"] {
+  float: none; width: auto; min-width: 0; margin: 0; padding: 0;
+}
+html[data-bc-theme] #files.files > a > .row > :nth-child(1) { flex: none; display: flex; }
+html[data-bc-theme] #files.files > a > .row > :nth-child(2) {
+  flex: 1 1 auto; overflow-wrap: anywhere;
+  color: var(--bc-link); font-weight: 600;
+}
+html[data-bc-theme] #files.files > a:hover > .row > :nth-child(2) { text-decoration: underline; }
+html[data-bc-theme] #files.files > a > .row > :nth-child(3) { flex: none; }
+html[data-bc-theme] #files.files .alert {
+  display: inline-block; margin: 0; padding: 4px 12px;
+  border-radius: 999px; font-size: 13px; line-height: 1.4;
+}
+@media (max-width: 600px) {
+  html[data-bc-theme] #files.files > a > .row { flex-wrap: wrap; }
+  html[data-bc-theme] #files.files > a > .row > :nth-child(3) { flex-basis: 100%; }
+}

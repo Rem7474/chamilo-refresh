@@ -148,6 +148,8 @@ html[data-bc-theme="light"] .bc-star[aria-pressed="true"] { color: #b45309; }
 .bc-results li:hover { border-color: var(--bc-accent); }
 .bc-result-title { font-size: 17px; font-weight: 600; }
 a.bc-result-title::after { content: ""; position: absolute; inset: 0; }
+/* Pas de `filter` au survol : il ferait du lien le bloc conteneur du ::after étiré, la zone cliquable se réduirait au titre. */
+html[data-bc-theme] .bc-results a.bc-result-title:hover { filter: none; }
 .bc-badge-note {
   padding: 1px 10px;
   border: 1px solid var(--bc-border);

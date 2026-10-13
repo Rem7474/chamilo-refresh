@@ -18,13 +18,21 @@ html[data-bc-theme] #course_tools .course-tool {
   border-radius: 16px;
   box-shadow: var(--bc-shadow);
   --bc-icon-color: var(--bc-accent);
-  transition: transform .12s, border-color .12s, box-shadow .12s;
+  transition: border-color .12s, box-shadow .12s;
 }
+/* Pas de décalage au survol : sur le bord de la carte, le curseur en sortirait et le survol clignoterait. */
 html[data-bc-theme] #course_tools .course-tool:hover {
-  transform: translateY(-2px);
   border-color: var(--bc-accent);
+  box-shadow: 0 0 0 1px var(--bc-accent), var(--bc-shadow);
 }
-html[data-bc-theme] #course_tools .course-tool:focus-within { outline: 2px solid var(--bc-accent); outline-offset: 2px; }
+/* Anneau de focus unique, porté par la carte et seulement au clavier : un clic ne laisse plus de double contour. */
+html[data-bc-theme] #course_tools .course-tool:has(:focus-visible) {
+  border-color: var(--bc-accent);
+  outline: 2px solid var(--bc-accent);
+  outline-offset: 0;
+}
+html[data-bc-theme] #course_tools .course-tool a:focus,
+html[data-bc-theme] #course_tools .course-tool a:focus-visible { outline: none !important; }
 
 html[data-bc-theme] #course_tools .course-tool > a[id^="tooldesc_"] {
   display: flex; align-items: center; justify-content: center;
@@ -40,6 +48,9 @@ html[data-bc-theme] #course_tools .course-tool > a[id^="istooldesc_"] {
   text-decoration: none;
 }
 html[data-bc-theme] #course_tools .course-tool > a[id^="istooldesc_"]::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+/* Un `filter` sur le lien deviendrait le bloc conteneur de son ::after : la zone cliquable se réduirait au texte au survol. */
+html[data-bc-theme] #course_tools .course-tool > a[id^="istooldesc_"]:hover { filter: none; text-decoration: none; }
+html[data-bc-theme] #course_tools .course-tool > a[id^="istooldesc_"]:hover { color: var(--bc-accent) !important; }
 
 html[data-bc-theme] #course_tools .course-tool > a.invisible,
 html[data-bc-theme] #course_tools .course-tool > a[id^="tooldesc_"].invisible img { opacity: .5; }
