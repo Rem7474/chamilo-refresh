@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.2
 
 - Recherche : le bouton « S’inscrire » des cours du catalogue est affiché dans la carte du résultat (formulaire natif reconstruit, confirmation conservée) au lieu de disparaître.
 
