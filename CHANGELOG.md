@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.3
+
+- Accueil d'un cours : la carte entière d'un outil reste cliquable au survol (le filtre de survol du thème réduisait la zone cliquable au texte), plus de décalage de la carte au survol ; un seul anneau de focus, au clavier uniquement.
+- Recherche : le curseur « main » ne clignote plus sur les cartes de résultats du catalogue (même cause).
+- Envoi de travaux : zone de dépôt lisible avec icône vectorielle, barre de progression arrondie, fichiers envoyés présentés en lignes compactes (icône, nom, état).
+
 ## 1.1.2
 
 - Recherche : le bouton « S’inscrire » des cours du catalogue est affiché dans la carte du résultat (formulaire natif reconstruit, confirmation conservée) au lieu de disparaître.
